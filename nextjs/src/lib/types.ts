@@ -1,181 +1,145 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
-
-export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  public: {
-    Tables: {
-      todo_list: {
-        Row: {
-          created_at: string
-          description: string | null
-          done: boolean
-          done_at: string | null
-          id: number
-          owner: string
-          title: string
-          urgent: boolean
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          done?: boolean
-          done_at?: string | null
-          id?: number
-          owner: string
-          title: string
-          urgent?: boolean
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          done?: boolean
-          done_at?: string | null
-          id?: number
-          owner?: string
-          title?: string
-          urgent?: boolean
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+// Tipos para las posadas y habitaciones
+export interface Posada {
+	id: string;
+	nombre: string;
+	slug: string;
+	descripcion: string;
+	descripcion_corta: string;
+	capacidad_maxima: number;
+	precio_por_noche: number;
+	precio_posada_completa: number;
+	amenidades: string[];
+	orden_display: number;
+	activa: boolean;
+	created_at: string;
+	updated_at: string;
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+export interface Habitacion {
+	id: string;
+	posada_id: string;
+	nombre: string;
+	descripcion: string;
+	capacidad: number;
+	precio_por_noche: number;
+	amenidades: string[];
+	orden_display: number;
+	activa: boolean;
+	created_at: string;
+	updated_at: string;
+}
 
-export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
-    }
-    ? R
-    : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
-    : never
+// Tipos para reservas
+export interface Reserva {
+	id: string;
+	posada_id?: string;
+	habitacion_id?: string;
+	codigo_reserva: string;
+	fecha_inicio: string;
+	fecha_fin: string;
+	numero_huespedes: number;
+	precio_total: number;
+	estado: "pendiente" | "confirmada" | "cancelada" | "completada";
+	nombre_cliente: string;
+	email_cliente: string;
+	telefono_cliente: string;
+	notas_especiales?: string;
+	notas_admin?: string;
+	confirmada_por?: string;
+	confirmada_en?: string;
+	cancelada_en?: string;
+	razon_cancelacion?: string;
+	session_id?: string;
+	ip_address?: string;
+	user_agent?: string;
+	created_at: string;
+	updated_at: string;
+}
 
-export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
-    ? I
-    : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
-    : never
+// Tipos para holds temporales
+export interface HoldTemporal {
+	id: string;
+	posada_id?: string;
+	habitacion_id?: string;
+	fecha_inicio: string;
+	fecha_fin: string;
+	session_id: string;
+	expires_at: string;
+	created_at: string;
+}
 
-export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
-    ? U
-    : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
-    : never
+// Tipos para la navegación
+export interface NavItem {
+	name: string;
+	href: string;
+	external?: boolean;
+}
 
-export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+// Tipos para imágenes del Hero
+export interface HeroImage {
+	id: string;
+	name: string;
+	image: string;
+	description: string;
+	slug: string;
+}
 
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof PublicSchema["CompositeTypes"]
-    | { schema: keyof Database },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
-  }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
-    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+// Tipos para componentes UI
+export interface ButtonProps {
+	variant?: "primary" | "secondary" | "ghost";
+	size?: "sm" | "md" | "lg";
+	children: React.ReactNode;
+	className?: string;
+	onClick?: () => void;
+	disabled?: boolean;
+	type?: "button" | "submit" | "reset";
+}
+
+// Tipos para formularios de reserva
+export interface ReservaFormData {
+	posada_id?: string;
+	habitacion_id?: string;
+	fecha_inicio: string;
+	fecha_fin: string;
+	numero_huespedes: number;
+	nombre_cliente: string;
+	email_cliente: string;
+	telefono_cliente: string;
+	notas_especiales?: string;
+}
+
+// Tipos para disponibilidad
+export interface DisponibilidadResponse {
+	disponible: boolean;
+	fechas_ocupadas: string[];
+	holds_activos: string[];
+	mensaje?: string;
+}
+
+// Tipos para la API
+export interface ApiResponse<T = any> {
+	success: boolean;
+	data?: T;
+	error?: string;
+	message?: string;
+}
+
+// Tipos para SEO/metadata
+export interface PageMetadata {
+	title: string;
+	description: string;
+	keywords?: string[];
+	image?: string;
+	url?: string;
+}
+
+// Tipos para configuración del sitio
+export interface SiteConfig {
+	name: string;
+	description: string;
+	url: string;
+	whatsapp: string;
+	instagram: string;
+	email: string;
+	phone: string;
+}
