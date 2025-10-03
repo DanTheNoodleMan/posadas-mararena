@@ -1,6 +1,11 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/sections/Hero";
 import Bienvenidos from "@/components/sections/Bienvenidos";
+import Servicios from "@/components/sections/Servicios";
+import Posadas from "@/components/sections/Posadas";
+import Galeria from "@/components/sections/Galeria";
+import Ubicacion from "@/components/sections/Ubicacion";
+import FooterCTA from "@/components/sections/FooterCTA";
 
 export default function Home() {
 	return (
@@ -8,38 +13,12 @@ export default function Home() {
 			<Header />
 			<main>
 				<Hero />
-
 				<Bienvenidos />
-
-        {/* Placeholder sections for future content */}
-
-				<section id="servicios" className="min-h-screen bg-neutral-50 flex items-center justify-center">
-					<div className="text-center">
-						<h2 className="text-4xl font-display font-bold text-primary-600 mb-4">Servicios</h2>
-						<p className="text-lg text-primary-500">Sección en desarrollo</p>
-					</div>
-				</section>
-
-				<section id="posadas" className="min-h-screen bg-neutral-100 flex items-center justify-center">
-					<div className="text-center">
-						<h2 className="text-4xl font-display font-bold text-primary-600 mb-4">Nuestras Posadas</h2>
-						<p className="text-lg text-primary-500">Sección en desarrollo</p>
-					</div>
-				</section>
-
-				<section id="galeria" className="min-h-screen bg-neutral-50 flex items-center justify-center">
-					<div className="text-center">
-						<h2 className="text-4xl font-display font-bold text-primary-600 mb-4">Galería</h2>
-						<p className="text-lg text-primary-500">Sección en desarrollo</p>
-					</div>
-				</section>
-
-				<section id="contacto" className="min-h-screen bg-neutral-100 flex items-center justify-center">
-					<div className="text-center">
-						<h2 className="text-4xl font-display font-bold text-primary-600 mb-4">Contacto</h2>
-						<p className="text-lg text-primary-500">Sección en desarrollo</p>
-					</div>
-				</section>
+				<Servicios />
+				<Posadas />
+				<Galeria />
+				<Ubicacion />
+				<FooterCTA />
 			</main>
 		</>
 	);

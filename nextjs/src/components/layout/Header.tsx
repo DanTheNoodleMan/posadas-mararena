@@ -51,16 +51,16 @@ export default function Header() {
 				<nav className="section-padding">
 					<div className="flex items-center justify-between py-4 lg:py-6">
 						{/* Left Navigation */}
-						<div className="hidden lg:flex items-center space-x-8">
+						<div className="hidden lg:flex items-center w-full justify-around mr-12">
 							{navItems.map((item) => (
-								<button key={item.name} onClick={() => scrollToSection(item.href)} className="nav-link text-sm">
+								<button key={item.name} onClick={() => scrollToSection(item.href)} className="nav-link text-lg font-light">
 									{item.name}
 								</button>
 							))}
 						</div>
 
 						{/* Center Logo */}
-						<div className="flex-shrink-0">
+						<div className="flex-shrink-1">
 							<div className="w-16 h-16 lg:w-20 lg:h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
 								{/* Logo Mararena - circular con ondas doradas */}
 								<div className="w-12 h-12 lg:w-16 lg:h-16 bg-primary-600 rounded-full border-2 border-accent-500 flex items-center justify-center relative overflow-hidden">
@@ -99,9 +99,9 @@ export default function Header() {
 						</div>
 
 						{/* Right Navigation */}
-						<div className="hidden lg:flex items-center space-x-8">
+						<div className="hidden lg:flex items-center w-full justify-around ml-12">
 							{rightNavItems.map((item) => (
-								<button key={item.name} onClick={() => scrollToSection(item.href)} className="nav-link text-sm">
+								<button key={item.name} onClick={() => scrollToSection(item.href)} className="nav-link text-lg font-light">
 									{item.name}
 								</button>
 							))}
