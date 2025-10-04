@@ -5,7 +5,7 @@ import Servicios from "@/components/sections/Servicios";
 import Posadas from "@/components/sections/Posadas";
 import Galeria from "@/components/sections/Galeria";
 import Ubicacion from "@/components/sections/Ubicacion";
-import FooterCTA from "@/components/sections/FooterCTA";
+import FooterCTA from "@/components/layout/FooterCTA";
 
 export default function Home() {
 	return (

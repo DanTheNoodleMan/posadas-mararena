@@ -1,6 +1,7 @@
 "use client";
 
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,9 +9,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	size?: "sm" | "md" | "lg";
 	children: ReactNode;
 	className?: string;
+	href?: string;
+	external?: boolean;
 }
 
-export default function Button({ variant = "primary", size = "md", children, className, ...props }: ButtonProps) {
+export default function Button({ variant = "primary", size = "md", children, className, href, external = false, ...props }: ButtonProps) {
 	const baseStyles =
 		"font-body font-semibold uppercase tracking-wide transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center";
 
@@ -26,15 +29,29 @@ export default function Button({ variant = "primary", size = "md", children, cla
 		lg: "px-8 py-4 text-base",
 	};
 
+	const combinedClassName = cn(baseStyles, variants[variant], sizes[size], className);
+
+	// Si tiene href, renderizar como Link
+	if (href) {
+		if (external) {
+			return (
+				<a href={href} target="_blank" rel="noopener noreferrer" className={combinedClassName}>
+					{children}
+				</a>
+			);
+		}
+
+		return (
+			<Link href={href} className={combinedClassName}>
+				{children}
+			</Link>
+		);
+	}
+
+	// Si no tiene href, renderizar como button
 	return (
-		<button className={cn(baseStyles, variants[variant], sizes[size], className)} {...props}>
+		<button className={combinedClassName} {...props}>
 			{children}
 		</button>
 	);
-}
-
-// Utility function para combinar classNames (necesaria para shadcn/ui)
-// Si ya existe en tu proyecto, puedes borrar esta función
-export function cn(...classes: (string | undefined | null | false)[]): string {
-	return classes.filter(Boolean).join(" ");
 }
