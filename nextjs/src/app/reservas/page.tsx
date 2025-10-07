@@ -7,9 +7,19 @@ import Footer from "@/components/layout/FooterCTA";
 import Button from "@/components/ui/Button";
 import Calendar from "@/components/ui/Calendar";
 import GuestSelector from "@/components/ui/GuestSelector";
-import { Check, ArrowRight, ArrowLeft, Loader2, Users as UsersIcon, Plus, Minus } from "lucide-react";
+import HabitacionSelector from "@/components/ui/HabitacionSelector";
+import { Check, ArrowRight, ArrowLeft, Loader2, Users as UsersIcon } from "lucide-react";
 import { createSPAClient } from "@/lib/supabase/client";
-import { crearHoldTemporal, crearReserva, eliminarHoldTemporal, calcularPrecioTotal } from "@/lib/reservas";
+import {
+	limpiarHoldsExpirados,
+	calcularPrecioTotal,
+	// Funciones para sistema múltiple habitaciones
+	obtenerHabitacionesDisponibles,
+	crearHoldMultiple,
+	crearReservaMultiple,
+	eliminarHoldTemporal,
+	type HabitacionDisponible,
+} from "@/lib/reservas";
 
 // Tipos
 interface Posada {
@@ -19,14 +29,6 @@ interface Posada {
 	capacidad_maxima: number;
 	precio_posada_completa: number;
 	descripcion_corta: string;
-}
-
-interface Habitacion {
-	id: string;
-	nombre: string;
-	capacidad: number;
-	precio_por_noche: number;
-	descripcion: string;
 }
 
 interface FechaOcupada {
@@ -46,11 +48,14 @@ export default function ReservasPage() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	// Datos de posadas y habitaciones
+	// Datos de posadas
 	const [posadas, setPosadas] = useState<Posada[]>([]);
-	const [habitaciones, setHabitaciones] = useState<Habitacion[]>([]);
-	const [fechasOcupadas, setFechasOcupadas] = useState<FechaOcupada[]>([]);
 	const [habitacionesCount, setHabitacionesCount] = useState<{ [key: string]: number }>({});
+	const [fechasOcupadas, setFechasOcupadas] = useState<FechaOcupada[]>([]);
+
+	// NUEVO: Habitaciones disponibles con flag de disponibilidad
+	const [habitacionesDisponibles, setHabitacionesDisponibles] = useState<HabitacionDisponible[]>([]);
+	const [cargandoHabitaciones, setCargandoHabitaciones] = useState(false);
 
 	// Selecciones del usuario
 	const [posadaSeleccionada, setPosadaSeleccionada] = useState<string | null>(null);
@@ -72,7 +77,16 @@ export default function ReservasPage() {
 	const [codigoReserva, setCodigoReserva] = useState<string | null>(null);
 	const [tiempoRestante, setTiempoRestante] = useState<number>(1800);
 
-	// Cargar posadas con número de habitaciones
+	// ============================================
+	// EFECTOS INICIALES
+	// ============================================
+
+	// Limpiar holds expirados al comienzo
+	useEffect(() => {
+		limpiarHoldsExpirados(supabase);
+	}, []);
+
+	// Cargar posadas
 	useEffect(() => {
 		cargarPosadas();
 		const posadaUrl = searchParams.get("posada");
@@ -81,13 +95,19 @@ export default function ReservasPage() {
 		}
 	}, [searchParams]);
 
-	// Cargar habitaciones cuando se selecciona posada
+	// Cargar fechas ocupadas cuando se selecciona posada O cambia el tipo de reserva
 	useEffect(() => {
 		if (posadaSeleccionada) {
-			cargarHabitaciones(posadaSeleccionada);
 			cargarFechasOcupadas(posadaSeleccionada);
 		}
-	}, [posadaSeleccionada]);
+	}, [posadaSeleccionada, tipoReserva]); // Agregar tipoReserva como dependencia
+
+	// NUEVO: Cargar habitaciones disponibles cuando se seleccionan fechas
+	useEffect(() => {
+		if (posadaSeleccionada && fechaInicio && fechaFin && tipoReserva === "habitacion") {
+			cargarHabitacionesDisponibles();
+		}
+	}, [posadaSeleccionada, fechaInicio, fechaFin, tipoReserva]);
 
 	// Timer para hold temporal
 	useEffect(() => {
@@ -108,6 +128,10 @@ export default function ReservasPage() {
 
 		return () => clearInterval(interval);
 	}, [holdId]);
+
+	// ============================================
+	// FUNCIONES DE CARGA DE DATOS
+	// ============================================
 
 	const cargarPosadas = async () => {
 		try {
@@ -139,33 +163,18 @@ export default function ReservasPage() {
 		}
 	};
 
-	const cargarHabitaciones = async (posadaSlug: string) => {
-		try {
-			const { data: posadaData } = await supabase.from("posadas").select("id").eq("slug", posadaSlug).single();
-
-			if (!posadaData) return;
-
-			const { data, error } = await supabase
-				.from("habitaciones")
-				.select("id, nombre, capacidad, precio_por_noche, descripcion")
-				.eq("posada_id", posadaData.id)
-				.eq("activa", true)
-				.order("orden_display");
-
-			if (error) throw error;
-			setHabitaciones(data || []);
-		} catch (err) {
-			console.error("Error cargando habitaciones:", err);
-		}
-	};
-
 	const cargarFechasOcupadas = async (posadaSlug: string) => {
 		try {
 			const { data: posadaData } = await supabase.from("posadas").select("id").eq("slug", posadaSlug).single();
 
 			if (!posadaData) return;
 
-			const { data, error } = await supabase.rpc("obtener_fechas_ocupadas", {
+			// Determinar qué función llamar según el tipo de reserva
+			const funcionRPC = tipoReserva === "habitacion" 
+				? "obtener_fechas_sin_disponibilidad"  // Solo muestra posada completa bloqueada
+				: "obtener_fechas_ocupadas";            // Muestra todas las fechas ocupadas
+
+			const { data, error } = await supabase.rpc(funcionRPC, {
 				p_posada_id: posadaData.id,
 				p_fecha_desde: new Date().toISOString().split("T")[0],
 				p_fecha_hasta: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
@@ -178,7 +187,40 @@ export default function ReservasPage() {
 		}
 	};
 
-	// Validaciones
+	// NUEVA FUNCIÓN: Cargar habitaciones con disponibilidad
+	const cargarHabitacionesDisponibles = async () => {
+		if (!posadaSeleccionada || !fechaInicio || !fechaFin) return;
+
+		setCargandoHabitaciones(true);
+		setError(null);
+
+		try {
+			const { data: posadaData } = await supabase.from("posadas").select("id").eq("slug", posadaSeleccionada).single();
+
+			if (!posadaData) {
+				throw new Error("Posada no encontrada");
+			}
+
+			const result = await obtenerHabitacionesDisponibles(supabase, posadaData.id, fechaInicio, fechaFin, sessionId);
+
+			if (!result.success) {
+				throw new Error(result.error || "Error cargando habitaciones");
+			}
+
+			setHabitacionesDisponibles(result.habitaciones || []);
+			setHabitacionesSeleccionadas([]); // Reset selección cuando cambian las fechas
+		} catch (err: any) {
+			console.error("Error cargando habitaciones:", err);
+			setError(err.message || "Error cargando habitaciones disponibles");
+		} finally {
+			setCargandoHabitaciones(false);
+		}
+	};
+
+	// ============================================
+	// VALIDACIONES
+	// ============================================
+
 	const validarEmail = (email: string): boolean => {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailRegex.test(email);
@@ -216,7 +258,10 @@ export default function ReservasPage() {
 		return true;
 	};
 
-	// Crear hold temporal usando helper
+	// ============================================
+	// CREAR HOLD Y RESERVA
+	// ============================================
+
 	const crearHold = async () => {
 		if (!posadaSeleccionada || !validarFechas() || !validarSeleccionHabitaciones()) return false;
 
@@ -228,36 +273,44 @@ export default function ReservasPage() {
 
 			if (!posadaData) throw new Error("Posada no encontrada");
 
-			// Crear hold principal
-			const holdData = {
-				session_id: sessionId,
-				posada_id: posadaData.id,
-				habitacion_id: tipoReserva === "posada_completa" ? null : undefined,
-				fecha_inicio: fechaInicio,
-				fecha_fin: fechaFin,
-				tipo_reserva: tipoReserva,
-			};
+			// NUEVA LÓGICA: Usar función para múltiples habitaciones
+			if (tipoReserva === "habitacion") {
+				const result = await crearHoldMultiple(supabase, {
+					session_id: sessionId,
+					posada_id: posadaData.id,
+					fecha_inicio: fechaInicio,
+					fecha_fin: fechaFin,
+					habitaciones_ids: habitacionesSeleccionadas,
+					num_huespedes: numHuespedes,
+				});
 
-			const { success, holdId: newHoldId, error: holdError } = await crearHoldTemporal(supabase, holdData);
+				if (!result.success || !result.holdId) {
+					setError(result.error || "Error creando hold temporal");
+					return false;
+				}
 
-			if (!success || !newHoldId) {
-				setError(holdError || "Error creando hold temporal");
-				return false;
+				setHoldId(result.holdId);
+			} else {
+				// Posada completa - usar lógica antigua
+				const { data: hold, error } = await supabase
+					.from("holds_temporales")
+					.insert({
+						session_id: sessionId,
+						posada_id: posadaData.id,
+						habitacion_id: null,
+						fecha_inicio: fechaInicio,
+						fecha_fin: fechaFin,
+						num_huespedes: numHuespedes,
+						expira_en: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+						tipo_reserva: "posada_completa",
+					})
+					.select()
+					.single();
+
+				if (error) throw error;
+				setHoldId(hold.id);
 			}
 
-			// Si es reserva de habitaciones, crear holds para cada habitación
-			if (tipoReserva === "habitacion" && habitacionesSeleccionadas.length > 0) {
-				const holdsHabitaciones = habitacionesSeleccionadas.map((habId) => ({
-					hold_id: newHoldId,
-					habitacion_id: habId,
-				}));
-
-				const { error: holdsError } = await supabase.from("holds_habitaciones").insert(holdsHabitaciones);
-
-				if (holdsError) throw holdsError;
-			}
-
-			setHoldId(newHoldId);
 			setTiempoRestante(1800);
 			return true;
 		} catch (err: any) {
@@ -269,7 +322,6 @@ export default function ReservasPage() {
 		}
 	};
 
-	// Crear reserva final usando helper
 	const finalizarReserva = async () => {
 		setLoading(true);
 		setError(null);
@@ -283,58 +335,58 @@ export default function ReservasPage() {
 
 			if (!posadaData) throw new Error("Posada no encontrada");
 
-			// Calcular precio
-			let precioPorNoche = posadaData.precio_posada_completa;
-			let precioTotal = precioPorNoche;
-
-			if (tipoReserva === "habitacion" && habitacionesSeleccionadas.length > 0) {
-				// Sumar precios de todas las habitaciones seleccionadas
-				precioPorNoche = habitaciones
-					.filter((h) => habitacionesSeleccionadas.includes(h.id))
-					.reduce((sum, h) => sum + h.precio_por_noche, 0);
-			}
-
-			const { numNoches, precioTotal: total } = calcularPrecioTotal(precioPorNoche, fechaInicio, fechaFin);
-			precioTotal = total;
-
-			// Crear reserva principal
-			const reservaData = {
-				tipo_reserva: tipoReserva,
-				posada_id: posadaData.id,
-				habitacion_id: null, // Deprecated, usamos tabla intermedia
-				fecha_inicio: fechaInicio,
-				fecha_fin: fechaFin,
-				nombre_cliente: nombreCliente,
-				email_cliente: emailCliente,
-				telefono_cliente: telefonoCliente,
-				num_huespedes: numHuespedes,
-				notas_cliente: notasCliente,
-				precio_por_noche: precioPorNoche,
-				precio_total: precioTotal,
-				session_id: sessionId,
-			};
-
-			const { success, reserva, error: reservaError } = await crearReserva(supabase, reservaData);
-
-			if (!success || !reserva) {
-				setError(reservaError || "Error creando reserva");
-				return;
-			}
-
-			// Si es reserva de habitaciones, crear registros en tabla intermedia
-			if (tipoReserva === "habitacion" && habitacionesSeleccionadas.length > 0) {
-				const reservasHabitaciones = habitacionesSeleccionadas.map((habId) => {
-					const hab = habitaciones.find((h) => h.id === habId);
-					return {
-						reserva_id: reserva.id,
-						habitacion_id: habId,
-						precio_por_noche: hab?.precio_por_noche || 0,
-					};
+			// NUEVA LÓGICA: Usar función para múltiples habitaciones
+			if (tipoReserva === "habitacion") {
+				const result = await crearReservaMultiple(supabase, {
+					session_id: sessionId,
+					posada_id: posadaData.id,
+					fecha_inicio: fechaInicio,
+					fecha_fin: fechaFin,
+					habitaciones_ids: habitacionesSeleccionadas,
+					num_huespedes: numHuespedes,
+					nombre_cliente: nombreCliente,
+					email_cliente: emailCliente,
+					telefono_cliente: telefonoCliente,
+					notas_especiales: notasCliente,
 				});
 
-				const { error: rhError } = await supabase.from("reservas_habitaciones").insert(reservasHabitaciones);
+				if (!result.success || !result.reserva) {
+					setError(result.error || "Error creando reserva");
+					return;
+				}
 
-				if (rhError) throw rhError;
+				setCodigoReserva(result.reserva.codigo_reserva);
+			} else {
+				// Posada completa - lógica antigua
+				const { numNoches, precioTotal } = calcularPrecioTotal(
+					posadaData.precio_posada_completa,
+					fechaInicio,
+					fechaFin
+				);
+
+				const { data: reserva, error } = await supabase
+					.from("reservas")
+					.insert({
+						tipo_reserva: "posada_completa",
+						posada_id: posadaData.id,
+						habitacion_id: null,
+						fecha_inicio: fechaInicio,
+						fecha_fin: fechaFin,
+						nombre_cliente: nombreCliente,
+						email_cliente: emailCliente,
+						telefono_cliente: telefonoCliente,
+						num_huespedes: numHuespedes,
+						notas_cliente: notasCliente,
+						precio_por_noche: posadaData.precio_posada_completa,
+						precio_total: precioTotal,
+						session_id: sessionId,
+						estado: "confirmada",
+					})
+					.select()
+					.single();
+
+				if (error) throw error;
+				setCodigoReserva(reserva.codigo_reserva);
 			}
 
 			// Eliminar hold temporal
@@ -342,7 +394,6 @@ export default function ReservasPage() {
 				await eliminarHoldTemporal(supabase, holdId);
 			}
 
-			setCodigoReserva(reserva.codigo_reserva);
 			setPaso(5);
 		} catch (err: any) {
 			console.error("Error creando reserva:", err);
@@ -352,7 +403,10 @@ export default function ReservasPage() {
 		}
 	};
 
-	// Handlers de navegación
+	// ============================================
+	// NAVEGACIÓN
+	// ============================================
+
 	const siguientePaso = async () => {
 		setError(null);
 
@@ -391,18 +445,10 @@ export default function ReservasPage() {
 		}
 	};
 
-	// Toggle habitación seleccionada
-	const toggleHabitacion = (habitacionId: string) => {
-		setHabitacionesSeleccionadas((prev) => {
-			if (prev.includes(habitacionId)) {
-				return prev.filter((id) => id !== habitacionId);
-			} else {
-				return [...prev, habitacionId];
-			}
-		});
-	};
+	// ============================================
+	// CÁLCULOS
+	// ============================================
 
-	// Calcular precio
 	const calcularPrecio = () => {
 		if (!fechaInicio || !fechaFin) return { noches: 0, total: 0, porNoche: 0 };
 
@@ -413,7 +459,7 @@ export default function ReservasPage() {
 		let precioPorNoche = posada.precio_posada_completa;
 
 		if (tipoReserva === "habitacion" && habitacionesSeleccionadas.length > 0) {
-			precioPorNoche = habitaciones
+			precioPorNoche = habitacionesDisponibles
 				.filter((h) => habitacionesSeleccionadas.includes(h.id))
 				.reduce((sum, h) => sum + h.precio_por_noche, 0);
 		}
@@ -485,7 +531,7 @@ export default function ReservasPage() {
 						</div>
 					)}
 
-					{/* Paso 1: Selección de Posada */}
+					{/* PASO 1: Selección de Posada */}
 					{paso === 1 && (
 						<div className="bg-neutral-100 p-8 rounded-sm">
 							<h2 className="font-display text-2xl text-primary-600 mb-6">Selecciona una Posada</h2>
@@ -533,10 +579,10 @@ export default function ReservasPage() {
 						</div>
 					)}
 
-					{/* Paso 2: Fechas */}
+					{/* PASO 2: Fechas y Habitaciones */}
 					{paso === 2 && posadaActual && (
 						<div className="space-y-6">
-							<div className="bg-neutral-100 p-8 rounded-sm">
+							<div className="bg-neutral-100 p-2 md:p-8 rounded-sm">
 								<h2 className="font-display text-2xl text-primary-600 mb-6">Fechas - {posadaActual.nombre}</h2>
 
 								<Calendar
@@ -550,14 +596,14 @@ export default function ReservasPage() {
 								/>
 
 								<div className="mt-6">
-									<GuestSelector 
-                                        value={numHuespedes}
-                                        onChange={setNumHuespedes}
-                                        min={1}
-                                        max={posadaActual.capacidad_maxima}
-                                        label="Número de Huéspedes"
-                                        className=""
-                                    />
+									<GuestSelector
+										value={numHuespedes}
+										onChange={setNumHuespedes}
+										min={1}
+										max={posadaActual.capacidad_maxima}
+										label="Número de Huéspedes"
+										className=""
+									/>
 								</div>
 
 								<div className="mt-6">
@@ -585,59 +631,46 @@ export default function ReservasPage() {
 											}`}
 											onClick={() => setTipoReserva("habitacion")}
 										>
-											<span className="font-semibold">Habitaciones Individuales</span>
+											<div>
+												<span className="font-semibold">Habitaciones Individuales</span>
+												<p className="text-xs text-primary-600/60 mt-1">
+													Elige las fechas y te mostraremos qué habitaciones están disponibles
+												</p>
+											</div>
 										</div>
 									</div>
 								</div>
 
-								{tipoReserva === "habitacion" && (
+								{/* NUEVO: Selector visual de habitaciones */}
+								{tipoReserva === "habitacion" && fechaInicio && fechaFin && (
 									<div className="mt-6">
-										<h3 className="font-semibold text-primary-600 mb-4">
-											Selecciona Habitaciones (puedes elegir múltiples)
-										</h3>
-										<div className="space-y-3">
-											{habitaciones.map((hab) => (
-												<div
-													key={hab.id}
-													className={`p-4 border-2 rounded-sm cursor-pointer ${
-														habitacionesSeleccionadas.includes(hab.id)
-															? "border-accent-500 bg-accent-500/5"
-															: "border-neutral-300"
-													}`}
-													onClick={() => toggleHabitacion(hab.id)}
-												>
-													<div className="flex items-start justify-between">
-														<div className="flex items-start gap-3">
-															<div
-																className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 ${
-																	habitacionesSeleccionadas.includes(hab.id)
-																		? "border-accent-500 bg-accent-500"
-																		: "border-neutral-300"
-																}`}
-															>
-																{habitacionesSeleccionadas.includes(hab.id) && (
-																	<Check className="w-3 h-3 text-primary-600" />
-																)}
-															</div>
-															<div>
-																<h4 className="font-semibold">{hab.nombre}</h4>
-																<p className="text-sm text-primary-600/70 mt-1">{hab.descripcion}</p>
-																<span className="text-xs text-primary-600/60">
-																	Capacidad: {hab.capacidad} personas
-																</span>
-															</div>
-														</div>
-														<span className="text-accent-500 font-semibold">${hab.precio_por_noche}/noche</span>
-													</div>
-												</div>
-											))}
-										</div>
+										{cargandoHabitaciones ? (
+											<div className="text-center py-12">
+												<Loader2 className="w-12 h-12 animate-spin text-primary-600 mx-auto mb-4" />
+												<p className="text-primary-600/70">Cargando habitaciones disponibles...</p>
+											</div>
+										) : (
+											<HabitacionSelector
+												habitaciones={habitacionesDisponibles}
+												habitacionesSeleccionadas={habitacionesSeleccionadas}
+												onSeleccionChange={setHabitacionesSeleccionadas}
+												numNoches={precio.noches}
+											/>
+										)}
+									</div>
+								)}
+
+								{tipoReserva === "habitacion" && (!fechaInicio || !fechaFin) && (
+									<div className="mt-6 p-4 bg-primary-600/5 border border-primary-600/20 rounded-sm">
+										<p className="text-sm text-primary-600/70">
+											Selecciona las fechas para ver las habitaciones disponibles
+										</p>
 									</div>
 								)}
 							</div>
 
 							{/* Resumen Precio */}
-							{fechaInicio && fechaFin && (
+							{fechaInicio && fechaFin && (tipoReserva === "posada_completa" || habitacionesSeleccionadas.length > 0) && (
 								<div className="bg-primary-600 p-6 rounded-sm text-neutral-50">
 									<h3 className="font-display text-xl mb-4">Resumen de Precio</h3>
 									<div className="space-y-2">
@@ -661,7 +694,7 @@ export default function ReservasPage() {
 						</div>
 					)}
 
-					{/* Paso 3: Datos */}
+					{/* PASO 3: Datos */}
 					{paso === 3 && (
 						<div className="bg-neutral-100 p-8 rounded-sm">
 							<h2 className="font-display text-2xl text-primary-600 mb-6">Tus Datos</h2>
@@ -715,7 +748,7 @@ export default function ReservasPage() {
 						</div>
 					)}
 
-					{/* Paso 4: Confirmación */}
+					{/* PASO 4: Confirmación */}
 					{paso === 4 && posadaActual && (
 						<div className="bg-neutral-100 p-8 rounded-sm">
 							<h2 className="font-display text-2xl text-primary-600 mb-6">Confirmar Reserva</h2>
@@ -747,7 +780,7 @@ export default function ReservasPage() {
 											<>
 												Habitaciones:{" "}
 												{habitacionesSeleccionadas
-													.map((id) => habitaciones.find((h) => h.id === id)?.nombre)
+													.map((id) => habitacionesDisponibles.find((h) => h.id === id)?.nombre)
 													.join(", ")}
 											</>
 										)}
@@ -782,7 +815,7 @@ export default function ReservasPage() {
 						</div>
 					)}
 
-					{/* Paso 5: Confirmación Exitosa */}
+					{/* PASO 5: Confirmación Exitosa */}
 					{paso === 5 && codigoReserva && (
 						<div className="bg-neutral-100 p-8 rounded-sm text-center">
 							<div className="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">

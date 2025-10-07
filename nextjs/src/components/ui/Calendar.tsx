@@ -26,6 +26,14 @@ export default function CalendarioReservas({
 	const [mesActual, setMesActual] = useState(new Date());
 	const [seleccionando, setSeleccionando] = useState<"inicio" | "fin">("inicio");
 
+	// Convertir Date a string local (sin problemas de timezone)
+	const dateToLocalString = (date: Date): string => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	};
+
 	// Generar días del mes
 	const diasDelMes = useMemo(() => {
 		const year = mesActual.getFullYear();
@@ -49,13 +57,12 @@ export default function CalendarioReservas({
 		return dias;
 	}, [mesActual]);
 
-	// Verificar si una fecha está ocupada (como NOCHE, no checkout)
-	const estaOcupada = (fecha: Date): boolean => {
+	// ✅ NUEVA FUNCIÓN: Verificar si una fecha es el primer día (checkin) de una reserva existente
+	const esCheckinDay = (fecha: Date): boolean => {
 		const fechaStr = dateToLocalString(fecha);
 		return fechasOcupadas.some(ocupada => {
-			// Una fecha está ocupada si es >= inicio Y < fin
-			// Esto significa que el checkout day (fecha_fin) NO está ocupado
-			return fechaStr >= ocupada.fecha_inicio && fechaStr < ocupada.fecha_fin;
+			// Es checkin day si coincide exactamente con fecha_inicio
+			return fechaStr === ocupada.fecha_inicio;
 		});
 	};
 
@@ -68,34 +75,45 @@ export default function CalendarioReservas({
 		});
 	};
 
-	// Verificar si una fecha es seleccionable
+	// Verificar si una fecha está ocupada como NOCHE (no puede estar dentro de un rango)
+	const estaOcupadaComoNoche = (fecha: Date): boolean => {
+		const fechaStr = dateToLocalString(fecha);
+		return fechasOcupadas.some(ocupada => {
+			// Una fecha está ocupada como noche si:
+			// - Es DESPUÉS del inicio (>) Y ANTES del fin (<)
+			// - Esto excluye tanto el checkin day como el checkout day
+			return fechaStr > ocupada.fecha_inicio && fechaStr < ocupada.fecha_fin;
+		});
+	};
+
+	// ✅ FUNCIÓN ACTUALIZADA: Verificar si una fecha es seleccionable
 	const esSeleccionable = (fecha: Date): boolean => {
 		const hoy = new Date();
 		hoy.setHours(0, 0, 0, 0);
 		
+		// No se puede seleccionar fechas pasadas
 		if (fecha < hoy) return false;
 		
-		// Si estamos seleccionando el inicio, no puede ser un día ocupado
-		if (seleccionando === "inicio" || !fechaInicio) {
-			return !estaOcupada(fecha);
-		}
+		// Si la fecha está ocupada como noche, NO es seleccionable bajo ninguna circunstancia
+		if (estaOcupadaComoNoche(fecha)) return false;
 		
-		// Si estamos seleccionando el fin:
-		// - Puede ser un checkout day (aunque esté "ocupado" por otra reserva)
-		// - NO puede ser un día ocupado como noche
-		if (esCheckoutDay(fecha) && !estaOcupada(fecha)) {
+		// Si estamos seleccionando el inicio de una nueva reserva:
+		if (seleccionando === "inicio" || !fechaInicio) {
+			// El inicio puede ser:
+			// 1. Un día completamente libre
+			// 2. Un checkout day (último día de otra reserva)
+			// NO puede ser un checkin day (primer día de otra reserva)
+			if (esCheckinDay(fecha)) return false;
 			return true;
 		}
 		
-		return !estaOcupada(fecha);
-	};
-
-	// Convertir Date a string local (sin problemas de timezone)
-	const dateToLocalString = (date: Date): string => {
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		return `${year}-${month}-${day}`;
+		// Si estamos seleccionando el fin de una nueva reserva:
+		// El fin puede ser:
+		// 1. Un día completamente libre
+		// 2. Un checkin day (primer día de otra reserva)
+		// NO puede ser un checkout day (último día de otra reserva)
+		if (esCheckoutDay(fecha)) return false;
+		return true;
 	};
 
 	// Verificar si una fecha está en el rango seleccionado
@@ -111,6 +129,13 @@ export default function CalendarioReservas({
 
 		const fechaStr = dateToLocalString(fecha);
 
+		// ✅ NUEVO: Si haces clic en la misma fecha de inicio (y no hay fin), deseleccionar todo
+		if (fechaStr === fechaInicio && !fechaFin) {
+			onFechasChange("", "");
+			setSeleccionando("inicio");
+			return;
+		}
+
 		if (seleccionando === "inicio" || !fechaInicio) {
 			onFechasChange(fechaStr, "");
 			setSeleccionando("fin");
@@ -125,17 +150,20 @@ export default function CalendarioReservas({
 				return;
 			}
 			
-			// Verificar que no haya fechas ocupadas DENTRO del rango
-			// Importante: No incluir el día final (checkout) en la verificación
+			// ✅ CORREGIDO: Verificar que no haya conflictos DENTRO del rango
 			let hayConflicto = false;
 			const diffTime = Math.abs(fin.getTime() - inicio.getTime());
 			const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 			
-			// Solo verificar días DENTRO del rango (i < diffDays, no <=)
+			// Verificar cada día DENTRO del rango (no incluir el último día)
 			for (let i = 0; i < diffDays; i++) {
 				const checkDate = new Date(inicio);
 				checkDate.setDate(checkDate.getDate() + i);
-				if (estaOcupada(checkDate)) {
+				
+				// Un día genera conflicto si:
+				// 1. Es un checkin day (primer día de otra reserva)
+				// 2. Está ocupado como noche de otra reserva
+				if (esCheckinDay(checkDate) || estaOcupadaComoNoche(checkDate)) {
 					hayConflicto = true;
 					break;
 				}
@@ -206,9 +234,30 @@ export default function CalendarioReservas({
 					const esInicio = fechaStr === fechaInicio;
 					const esFin = fechaStr === fechaFin;
 					const enRango = estaEnRango(fecha);
-					const ocupada = estaOcupada(fecha);
+					const ocupadaComoNoche = estaOcupadaComoNoche(fecha);
+					const checkinDay = esCheckinDay(fecha);
 					const checkoutDay = esCheckoutDay(fecha);
 					const seleccionable = esSeleccionable(fecha);
+
+					// ✅ CORREGIDO: Prioridad de estilos
+					// 1. Seleccionado (inicio/fin) - siempre tiene prioridad
+					// 2. En rango
+					// 3. Checkin/Checkout disponible
+					// 4. Ocupado como noche
+					// 5. Normal seleccionable
+
+					let claseEstilo = '';
+					if (esInicio || esFin) {
+						claseEstilo = 'bg-primary-600 text-neutral-50 font-bold';
+					} else if (enRango) {
+						claseEstilo = 'bg-primary-600/20';
+					} else if (ocupadaComoNoche) {
+						claseEstilo = 'bg-red-50 text-red-300';
+					} else if ((checkinDay || checkoutDay) && seleccionable) {
+						claseEstilo = 'bg-amber-50 border border-amber-300 text-primary-600';
+					} else if (seleccionable) {
+						claseEstilo = 'hover:bg-neutral-200';
+					}
 
 					return (
 						<button
@@ -219,11 +268,7 @@ export default function CalendarioReservas({
 							className={`
 								aspect-square flex items-center justify-center text-sm rounded-sm transition-all relative
 								${!seleccionable ? 'text-neutral-300 cursor-not-allowed line-through' : 'cursor-pointer'}
-								${esInicio || esFin ? 'bg-primary-600 text-neutral-50 font-bold' : ''}
-								${enRango ? 'bg-primary-600/20' : ''}
-								${!esInicio && !esFin && !enRango && seleccionable ? 'hover:bg-neutral-200' : ''}
-								${ocupada && !checkoutDay ? 'bg-red-50 text-red-300' : ''}
-								${checkoutDay && !ocupada && seleccionable ? 'bg-orange-50 border border-orange-200' : ''}
+								${claseEstilo}
 							`}
 						>
 							{fecha.getDate()}
@@ -247,20 +292,55 @@ export default function CalendarioReservas({
 					<span>No disponible</span>
 				</div>
 				<div className="flex items-center gap-2">
-					<div className="w-4 h-4 bg-orange-50 border border-orange-200 rounded-sm" />
-					<span>Día checkout disponible</span>
+					<div className="w-4 h-4 bg-amber-50 border border-amber-300 rounded-sm" />
+					<span>Checkin/Checkout disponible</span>
 				</div>
 			</div>
 
 			{/* Info de selección */}
 			{fechaInicio && fechaFin && (
-				<div className="mt-4 p-3 bg-accent-500/10 border border-accent-500 rounded-sm text-center">
-					<p className="text-sm font-semibold text-primary-600">
-						{new Date(fechaInicio).toLocaleDateString('es-ES')} → {new Date(fechaFin).toLocaleDateString('es-ES')}
-					</p>
-					<p className="text-xs text-primary-600/70 mt-1">
-						{Math.ceil((new Date(fechaFin).getTime() - new Date(fechaInicio).getTime()) / (1000 * 60 * 60 * 24))} noches
-					</p>
+				<div className="mt-4 p-3 bg-accent-500/10 border border-accent-500 rounded-sm">
+					<div className="flex items-center justify-between">
+						<div>
+							<p className="text-sm font-semibold text-primary-600">
+								{new Date(fechaInicio).toLocaleDateString('es-ES')} → {new Date(fechaFin).toLocaleDateString('es-ES')}
+							</p>
+							<p className="text-xs text-primary-600/70 mt-1">
+								{Math.ceil((new Date(fechaFin).getTime() - new Date(fechaInicio).getTime()) / (1000 * 60 * 60 * 24))} noches
+							</p>
+						</div>
+						<button
+							type="button"
+							onClick={() => {
+								onFechasChange("", "");
+								setSeleccionando("inicio");
+							}}
+							className="text-xs text-primary-600/70 hover:text-primary-600 underline"
+						>
+							Limpiar
+						</button>
+					</div>
+				</div>
+			)}
+			
+			{/* Info si solo hay inicio seleccionado */}
+			{fechaInicio && !fechaFin && (
+				<div className="mt-4 p-3 bg-primary-600/5 border border-primary-600/20 rounded-sm">
+					<div className="flex items-center justify-between">
+						<p className="text-sm text-primary-600/70">
+							Fecha de inicio: {new Date(fechaInicio).toLocaleDateString('es-ES')}
+						</p>
+						<button
+							type="button"
+							onClick={() => {
+								onFechasChange("", "");
+								setSeleccionando("inicio");
+							}}
+							className="text-xs text-primary-600/70 hover:text-primary-600 underline"
+						>
+							Limpiar
+						</button>
+					</div>
 				</div>
 			)}
 		</div>
