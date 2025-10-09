@@ -1,5 +1,4 @@
 import {SupabaseClient} from "@supabase/supabase-js";
-import {Database} from "@/lib/types";
 
 export enum ClientType {
     SERVER = 'server',
@@ -7,7 +6,7 @@ export enum ClientType {
 }
 
 export class SassClient {
-    private client: SupabaseClient<Database>;
+    private client: SupabaseClient;
     private clientType: ClientType;
 
     constructor(client: SupabaseClient, clientType: ClientType) {
@@ -80,10 +79,6 @@ export class SassClient {
             query = query.eq('done', done)
         }
         return query
-    }
-
-    async createTask(row: Database["public"]["Tables"]["todo_list"]["Insert"]) {
-        return this.client.from('todo_list').insert(row)
     }
 
     async removeTask (id: string) {
