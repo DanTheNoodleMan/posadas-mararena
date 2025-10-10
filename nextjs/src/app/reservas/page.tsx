@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { connection } from "next/server";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/FooterCTA";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import Calendar from "@/components/ui/Calendar";
 import GuestSelector from "@/components/ui/GuestSelector";
 import HabitacionSelector from "@/components/ui/HabitacionSelector";
@@ -39,7 +40,8 @@ interface FechaOcupada {
 
 type TipoReserva = "habitacion" | "posada_completa";
 
-export default function ReservasPage() {
+export default async function ReservasPage() {
+	await connection();
 	const searchParams = useSearchParams();
 	const supabase = createSPAClient();
 
@@ -170,9 +172,10 @@ export default function ReservasPage() {
 			if (!posadaData) return;
 
 			// Determinar qué función llamar según el tipo de reserva
-			const funcionRPC = tipoReserva === "habitacion" 
-				? "obtener_fechas_sin_disponibilidad"  // Solo muestra posada completa bloqueada
-				: "obtener_fechas_ocupadas";            // Muestra todas las fechas ocupadas
+			const funcionRPC =
+				tipoReserva === "habitacion"
+					? "obtener_fechas_sin_disponibilidad" // Solo muestra posada completa bloqueada
+					: "obtener_fechas_ocupadas"; // Muestra todas las fechas ocupadas
 
 			const { data, error } = await supabase.rpc(funcionRPC, {
 				p_posada_id: posadaData.id,
@@ -356,11 +359,7 @@ export default function ReservasPage() {
 				setCodigoReserva(result.reserva.codigo_reserva);
 			} else {
 				// Posada completa - lógica antigua
-				const { numNoches, precioTotal } = calcularPrecioTotal(
-					posadaData.precio_posada_completa,
-					fechaInicio,
-					fechaFin
-				);
+				const { numNoches, precioTotal } = calcularPrecioTotal(posadaData.precio_posada_completa, fechaInicio, fechaFin);
 
 				const { data: reserva, error } = await supabase
 					.from("reservas")

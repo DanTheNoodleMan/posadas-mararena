@@ -1,21 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 
 // Datos de las posadas con imágenes
 const posadaImages = [
 	{
 		id: "vista-al-mar",
 		name: "VISTA AL MAR",
-		image: "/images/vista-al-mar-hero.webp", // Necesitarás añadir esta imagen
+		image: "/images/vista-al-mar-hero.webp",
 		description: "Piscina infinita, jacuzzi y playa privada",
 		slug: "vista-al-mar",
 	},
 	{
 		id: "inmarcesible",
 		name: "INMARCESIBLE",
-		image: "/images/inmarcesible-hero.webp", // Necesitarás añadir esta imagen
+		image: "/images/inmarcesible-hero.webp",
 		description: "2 churuatas sociales y cocina industrial",
 		slug: "inmarcesible",
 	},
@@ -24,6 +24,21 @@ const posadaImages = [
 export default function Hero() {
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const [isAutoRotating, setIsAutoRotating] = useState(true);
+	const [buttonSize, setButtonSize] = useState<"sm" | "md" | "lg">("md");
+
+	// Detectar tamaño de pantalla en el cliente
+	useEffect(() => {
+		const updateSize = () => {
+			setButtonSize(window.innerWidth >= 1024 ? "lg" : "sm");
+		};
+
+		// Ejecutar inmediatamente
+		updateSize();
+
+		// Escuchar cambios de tamaño
+		window.addEventListener("resize", updateSize);
+		return () => window.removeEventListener("resize", updateSize);
+	}, []);
 
 	// Auto-rotate images every 5 seconds
 	useEffect(() => {
@@ -110,7 +125,7 @@ export default function Hero() {
 						<Button
 							onClick={handleExplorarPosadas}
 							variant="primary"
-							size={window.innerWidth >= 1024 ? "lg" : "sm"} // Dynamically set size based on screen width
+							size={buttonSize}
 							className="text-base px-12 py-4 shadow-lg hover:shadow-xl"
 						>
 							EXPLORAR POSADAS
@@ -121,7 +136,7 @@ export default function Hero() {
 							<Button
 								onClick={handleReservarPosada}
 								variant="secondary"
-								size={window.innerWidth >= 1024 ? "lg" : "sm"} // Dynamically set size based on screen width
+								size={buttonSize}
 								className="text-base px-12 py-4 shadow-lg hover:shadow-xl"
 							>
 								RESERVAR {currentImage.name}

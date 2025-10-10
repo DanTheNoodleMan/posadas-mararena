@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/FooterCTA";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { Search, Calendar, Users, Home, Phone, Mail, CheckCircle, XCircle } from "lucide-react";
 import { createSPAClient } from "@/lib/supabase/client";
 
@@ -46,11 +46,13 @@ export default function ConsultarReservaPage() {
 		try {
 			const { data, error: dbError } = await supabase
 				.from("reservas")
-				.select(`
+				.select(
+					`
 					*,
 					posada:posadas(nombre),
 					habitacion:habitaciones(nombre)
-				`)
+				`
+				)
 				.eq("codigo_reserva", codigoReserva.trim().toUpperCase())
 				.single();
 
@@ -64,7 +66,7 @@ export default function ConsultarReservaPage() {
 			setReserva({
 				...data,
 				posada_nombre: data.posada?.nombre || "N/A",
-				habitacion_nombre: data.habitacion?.nombre || null
+				habitacion_nombre: data.habitacion?.nombre || null,
 			});
 		} catch (err: any) {
 			console.error("Error buscando reserva:", err);
@@ -79,7 +81,7 @@ export default function ConsultarReservaPage() {
 			confirmada: { bg: "bg-green-100", text: "text-green-700", label: "Confirmada" },
 			cancelada: { bg: "bg-red-100", text: "text-red-700", label: "Cancelada" },
 			completada: { bg: "bg-blue-100", text: "text-blue-700", label: "Completada" },
-			no_show: { bg: "bg-gray-100", text: "text-gray-700", label: "No Show" }
+			no_show: { bg: "bg-gray-100", text: "text-gray-700", label: "No Show" },
 		};
 
 		const badge = badges[estado as keyof typeof badges] || badges.confirmada;
@@ -100,19 +102,13 @@ export default function ConsultarReservaPage() {
 			<div className="min-h-screen bg-neutral-50 py-16">
 				<div className="max-w-3xl mx-auto px-6">
 					<div className="text-center mb-12">
-						<h1 className="font-display text-4xl md:text-5xl text-primary-600 mb-4">
-							Consultar Reserva
-						</h1>
-						<p className="text-primary-600/70 text-lg">
-							Ingresa tu código de reserva para ver los detalles
-						</p>
+						<h1 className="font-display text-4xl md:text-5xl text-primary-600 mb-4">Consultar Reserva</h1>
+						<p className="text-primary-600/70 text-lg">Ingresa tu código de reserva para ver los detalles</p>
 					</div>
 
 					{/* Search Box */}
 					<div className="bg-neutral-100 p-8 rounded-sm mb-8">
-						<label className="block text-sm font-semibold text-primary-600 mb-3">
-							Código de Reserva
-						</label>
+						<label className="block text-sm font-semibold text-primary-600 mb-3">Código de Reserva</label>
 						<div className="flex gap-3">
 							<input
 								type="text"
@@ -122,17 +118,18 @@ export default function ConsultarReservaPage() {
 								placeholder="MARA-2024-001"
 								className="flex-1 px-4 py-3 border border-neutral-300 rounded-sm focus:border-accent-500 focus:outline-none font-mono text-lg"
 							/>
-							<Button
-								variant="primary"
-								onClick={buscarReserva}
-								disabled={loading}
-							>
-								{loading ? "Buscando..." : <><Search className="w-5 h-5 mr-2" />Buscar</>}
+							<Button variant="primary" onClick={buscarReserva} disabled={loading}>
+								{loading ? (
+									"Buscando..."
+								) : (
+									<>
+										<Search className="w-5 h-5 mr-2" />
+										Buscar
+									</>
+								)}
 							</Button>
 						</div>
-						<p className="text-xs text-primary-600/60 mt-2">
-							Ejemplo: MARA-2024-001 (tu código fue enviado por email)
-						</p>
+						<p className="text-xs text-primary-600/60 mt-2">Ejemplo: MARA-2024-001 (tu código fue enviado por email)</p>
 					</div>
 
 					{/* Error Message */}
@@ -147,14 +144,13 @@ export default function ConsultarReservaPage() {
 						<div className="bg-neutral-100 p-8 rounded-sm space-y-6">
 							<div className="flex items-center justify-between pb-6 border-b border-neutral-300">
 								<div>
-									<h2 className="font-display text-2xl text-primary-600 mb-2">
-										Reserva {reserva.codigo_reserva}
-									</h2>
+									<h2 className="font-display text-2xl text-primary-600 mb-2">Reserva {reserva.codigo_reserva}</h2>
 									<p className="text-sm text-primary-600/60">
-										Creada el {new Date(reserva.created_at).toLocaleDateString('es-ES', {
-											year: 'numeric',
-											month: 'long',
-											day: 'numeric'
+										Creada el{" "}
+										{new Date(reserva.created_at).toLocaleDateString("es-ES", {
+											year: "numeric",
+											month: "long",
+											day: "numeric",
 										})}
 									</p>
 								</div>
@@ -184,13 +180,13 @@ export default function ConsultarReservaPage() {
 										<div>
 											<h3 className="font-semibold text-primary-600 mb-1">Fechas</h3>
 											<p className="text-primary-600/70">
-												<strong>Entrada:</strong> {new Date(reserva.fecha_inicio).toLocaleDateString('es-ES')}
+												<strong>Entrada:</strong> {new Date(reserva.fecha_inicio).toLocaleDateString("es-ES")}
 											</p>
 											<p className="text-primary-600/70">
-												<strong>Salida:</strong> {new Date(reserva.fecha_fin).toLocaleDateString('es-ES')}
+												<strong>Salida:</strong> {new Date(reserva.fecha_fin).toLocaleDateString("es-ES")}
 											</p>
 											<p className="text-sm text-primary-600/60 mt-1">
-												{reserva.num_noches} {reserva.num_noches === 1 ? 'noche' : 'noches'}
+												{reserva.num_noches} {reserva.num_noches === 1 ? "noche" : "noches"}
 											</p>
 										</div>
 									</div>
@@ -202,7 +198,7 @@ export default function ConsultarReservaPage() {
 										<div>
 											<h3 className="font-semibold text-primary-600 mb-1">Huéspedes</h3>
 											<p className="text-primary-600/70">
-												{reserva.num_huespedes} {reserva.num_huespedes === 1 ? 'persona' : 'personas'}
+												{reserva.num_huespedes} {reserva.num_huespedes === 1 ? "persona" : "personas"}
 											</p>
 										</div>
 									</div>
@@ -238,22 +234,25 @@ export default function ConsultarReservaPage() {
 							{reserva.estado === "confirmada" && (
 								<div className="bg-accent-500/10 border border-accent-500 p-4 rounded-sm">
 									<p className="text-primary-600 text-sm">
-										<strong>¿Necesitas ayuda?</strong> Contáctanos por WhatsApp para cualquier consulta sobre tu reserva.
+										<strong>¿Necesitas ayuda?</strong> Contáctanos por WhatsApp para cualquier consulta sobre tu
+										reserva.
 									</p>
 								</div>
 							)}
 
 							<div className="flex flex-col sm:flex-row gap-4 pt-6">
-								<Button 
-									variant="primary" 
-									href={`https://wa.me/584123112746?text=${encodeURIComponent(`Hola! Consulto sobre mi reserva ${reserva.codigo_reserva}`)}`}
+								<Button
+									variant="primary"
+									href={`https://wa.me/584123112746?text=${encodeURIComponent(
+										`Hola! Consulto sobre mi reserva ${reserva.codigo_reserva}`
+									)}`}
 									external
 									className="flex-1"
 								>
 									Contactar por WhatsApp
 								</Button>
-								<Button 
-									variant="secondary" 
+								<Button
+									variant="secondary"
 									onClick={() => {
 										setReserva(null);
 										setCodigoReserva("");
@@ -269,14 +268,8 @@ export default function ConsultarReservaPage() {
 					{/* Help Section */}
 					{!reserva && !error && (
 						<div className="text-center mt-12">
-							<p className="text-primary-600/70 mb-4">
-								¿No encuentras tu código de reserva?
-							</p>
-							<Button 
-								variant="secondary" 
-								href="https://wa.me/584123112746"
-								external
-							>
+							<p className="text-primary-600/70 mb-4">¿No encuentras tu código de reserva?</p>
+							<Button variant="secondary" href="https://wa.me/584123112746" external>
 								Contactar Soporte
 							</Button>
 						</div>

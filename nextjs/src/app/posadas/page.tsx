@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Waves, Users, Home, UtensilsCrossed, Wifi, ParkingCircle, Calendar, Sparkles, ChevronRight } from "lucide-react";
 import Header from "@/components/layout/Header";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 
 export default function PosadasPage() {
 	return (
@@ -195,7 +195,7 @@ export default function PosadasPage() {
 					<div className="relative">
 						{/* Fondo con gradiente sutil */}
 						<div className="absolute inset-0 bg-gradient-to-br from-primary-700/50 via-primary-600/30 to-primary-500/50 rounded-sm" />
-						
+
 						{/* Contenido */}
 						<div className="relative p-8 rounded-sm border border-accent-500/20">
 							<h3 className="font-display text-2xl text-neutral-50 mb-6">Habitaciones disponibles</h3>

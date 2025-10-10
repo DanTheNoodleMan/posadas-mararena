@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Waves, Users, Home, UtensilsCrossed, Wifi, ParkingCircle, ChefHat, Wind, TreePine, PartyPopper, X } from "lucide-react";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 
 // Datos de habitaciones organizadas por área
 const habitacionesPorArea = {
