@@ -7,7 +7,7 @@ import Link from "next/link";
 const Ubicacion = () => {
 	// Coordenadas aproximadas de Chirimena
 	const mapUrl =
-		"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31421.2!2d-65.6895!3d10.6123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2bb3a9c8c8c8c8%3A0x8c8c8c8c8c8c8c8c!2sChirimena%2C%20Miranda%2C%20Venezuela!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus";
+		"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3921.6423437732255!2d-66.1651582249604!3d10.607111089531568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDM2JzI1LjYiTiA2NsKwMDknNDUuMyJX!5e0!3m2!1sen!2sjp!4v1760100184268!5m2!1sen!2sjp";
 
 	return (
 		<section id="ubicacion" className="relative bg-neutral-50">
@@ -48,7 +48,8 @@ const Ubicacion = () => {
 
 						{/* CTA Link */}
 						<Link
-							href="#como-llegar"
+							href="https://www.instagram.com/reel/DKQE3CeR2-n/?utm_source=ig_web_copy_link"
+							target="_blank"
 							className="group inline-flex items-center gap-2 text-accent-500 font-serif italic text-lg hover:text-accent-600 transition-colors duration-300"
 						>
 							Cómo llegar

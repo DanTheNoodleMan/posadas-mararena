@@ -67,7 +67,7 @@ export default function Bienvenidos() {
 					<div
 						className="bg-cover bg-center"
 						style={{
-							backgroundImage: "url('/images/bienvenidos-deck.jpg')",
+							backgroundImage: "url('/images/bienvenidos-deck.webp')",
 						}}
 					>
 						{/* Subtle gradient overlay for better text contrast if needed */}
@@ -84,7 +84,7 @@ export default function Bienvenidos() {
 						backgroundImage: "url('/images/bienvenidos-deck.webp')",
 					}}
 				>
-					<div className="absolute inset-0 bg-neutral-100/95" />
+					<div className="absolute inset-0 bg-neutral-100/60" />
 				</div>
 			</div>
 
