@@ -13,7 +13,7 @@ export default function PosadasPage() {
 			<section className="relative min-h-[60vh] flex items-center justify-center bg-primary-600">
 				<div
 					className="absolute inset-0 bg-cover bg-center"
-					style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+					style={{ backgroundImage: "url(/images/galeria/grupo-relax.webp)" }}
 				/>
 				<div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-primary-600" />
 
@@ -36,19 +36,19 @@ export default function PosadasPage() {
 							<div className="col-span-2 h-[300px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(/images/posadas/vista-al-mar/interior1.webp)" }}
 								/>
 							</div>
 							<div className="h-[200px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(/images/posadas/vista-al-mar/exterior2.webp)" }}
 								/>
 							</div>
 							<div className="h-[200px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(images/galeria/churuata-interior.webp)" }}
 								/>
 							</div>
 						</div>
@@ -68,8 +68,8 @@ export default function PosadasPage() {
 							{/* Stats */}
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBox number="6" label="Habitaciones" />
-								<StatBox number="12+" label="Huéspedes" />
-								<StatBox number="$1,250" label="Por noche" small />
+								<StatBox number="12" label="Huéspedes" />
+								<StatBox number="$210+" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}
@@ -141,7 +141,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBoxDark number="11" label="Habitaciones" />
 								<StatBoxDark number="31" label="Huéspedes" />
-								<StatBoxDark number="$1,980" label="Por noche" small />
+								<StatBoxDark number="$140+" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}
@@ -173,19 +173,19 @@ export default function PosadasPage() {
 							<div className="col-span-2 h-[300px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(/images/posadas/inmarcesible-posada.webp)" }}
 								/>
 							</div>
 							<div className="h-[200px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(/images/posadas/inmar/interior1.webp)" }}
 								/>
 							</div>
 							<div className="h-[200px] relative overflow-hidden group">
 								<div
 									className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-									style={{ backgroundImage: "url(/images/posadas/vista-al-mar-hero.webp)" }}
+									style={{ backgroundImage: "url(/images/posadas/inmar/cocina1.webp)" }}
 								/>
 							</div>
 						</div>

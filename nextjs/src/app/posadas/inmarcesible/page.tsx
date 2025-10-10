@@ -1,7 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { Waves, Users, Home, UtensilsCrossed, Wifi, ParkingCircle, ChefHat, Wind, TreePine, PartyPopper, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+	Waves,
+	Users,
+	Home,
+	UtensilsCrossed,
+	Wifi,
+	ParkingCircle,
+	ChefHat,
+	Wind,
+	TreePine,
+	PartyPopper,
+	X,
+	ChevronLeft,
+	ChevronRight,
+	Image as ImageIcon,
+} from "lucide-react";
 import Button from "@/components/ui/button";
 
 // Datos de habitaciones organizadas por área
@@ -15,8 +30,9 @@ const habitacionesPorArea = {
 			precio: 140,
 			amenidades: ["Litera", "Cerca de piscina", "Acceso a cocina", "Aire acondicionado", "Baño privado"],
 			imagenes: [
-				"/images/posadas/inmarcesible/piscina/standard-litera-1.jpg",
-				"/images/posadas/inmarcesible/piscina/standard-litera-2.jpg",
+				"/images/posadas/inmar/areap/areap4.webp",
+				"/images/posadas/inmar/areap/areap1.webp",
+				"/images/posadas/inmar/areap/areap3.webp",
 			],
 			disponibles: 3,
 		},
@@ -28,8 +44,11 @@ const habitacionesPorArea = {
 			precio: 150,
 			amenidades: ["Cama matrimonial", "Cerca de piscina", "Acceso a cocina", "Aire acondicionado", "Baño privado"],
 			imagenes: [
-				"/images/posadas/inmarcesible/piscina/standard-matrimonial-1.jpg",
-				"/images/posadas/inmarcesible/piscina/standard-matrimonial-2.jpg",
+				"/images/posadas/inmar/areap/areap5.webp",
+				"/images/posadas/inmar/areap/areap6.webp",
+				"/images/posadas/inmar/areap/areap7.webp",
+				"/images/posadas/inmar/areap/areap1.webp",
+				"/images/posadas/inmar/areap/areap2.webp",
 			],
 			disponibles: 1,
 		},
@@ -43,9 +62,12 @@ const habitacionesPorArea = {
 			precio: 450,
 			amenidades: ["Cama queen + litera", "Planta alta", "Vista panorámica", "Aire acondicionado", "Baño privado"],
 			imagenes: [
-				"/images/posadas/inmarcesible/churuata-alta/junior-suite-1.jpg",
-				"/images/posadas/inmarcesible/churuata-alta/junior-suite-2.jpg",
-				"/images/posadas/inmarcesible/churuata-alta/junior-suite-3.jpg",
+				"/images/posadas/inmar/churuata-alta/alta1.webp",
+				"/images/posadas/inmar/churuata-alta/alta2.webp",
+				"/images/posadas/inmar/churuata-alta/alta3.webp",
+				"/images/posadas/inmar/churuata-alta/alta4.webp",
+				"/images/posadas/inmar/churuata-alta/alta5.webp",
+				"/images/posadas/inmar/churuata-alta/alta6.webp",
 			],
 			disponibles: 4,
 		},
@@ -58,10 +80,7 @@ const habitacionesPorArea = {
 			capacidad: 2,
 			precio: 150,
 			amenidades: ["Cama matrimonial", "Planta baja", "Aire acondicionado", "Baño privado"],
-			imagenes: [
-				"/images/posadas/inmarcesible/churuata-baja/standard-1.jpg",
-				"/images/posadas/inmarcesible/churuata-baja/standard-2.jpg",
-			],
+			imagenes: ["/images/posadas/inmar/churuata-baja/standard1.webp", "/images/posadas/inmar/churuata-baja/cocina1.webp"],
 			disponibles: 1,
 		},
 		{
@@ -72,8 +91,10 @@ const habitacionesPorArea = {
 			precio: 400,
 			amenidades: ["Cama matrimonial", "Litera", "Cocina privada", "Aire acondicionado", "Baño privado"],
 			imagenes: [
-				"/images/posadas/inmarcesible/churuata-baja/premium-1.jpg",
-				"/images/posadas/inmarcesible/churuata-baja/premium-2.jpg",
+				"/images/posadas/inmar/churuata-baja/premium1.webp",
+				"/images/posadas/inmar/churuata-baja/premium2.webp",
+				"/images/posadas/inmar/churuata-baja/premium3.webp",
+				"/images/posadas/inmar/churuata-baja/premium4.webp",
 			],
 			disponibles: 1,
 		},
@@ -85,8 +106,9 @@ const habitacionesPorArea = {
 			precio: 300,
 			amenidades: ["2 camas queen", "Habitación amplia", "Aire acondicionado", "Baño privado"],
 			imagenes: [
-				"/images/posadas/inmarcesible/churuata-baja/doble-queen-1.jpg",
-				"/images/posadas/inmarcesible/churuata-baja/doble-queen-2.jpg",
+				"/images/posadas/inmar/churuata-baja/doble1.webp",
+				"/images/posadas/inmar/churuata-baja/doble2.webp",
+				"/images/posadas/inmar/churuata-baja/doble3.webp",
 			],
 			disponibles: 1,
 		},
@@ -112,8 +134,8 @@ const amenidadesPremium = [
 	},
 	{
 		icon: <Waves className="w-6 h-6" />,
-		titulo: "Piscinas Múltiples",
-		descripcion: "Varios espacios acuáticos para tu disfrute",
+		titulo: "Piscinas y Jacuzzi",
+		descripcion: "Varios espacios acuáticos para su disfrute",
 	},
 	{
 		icon: <PartyPopper className="w-6 h-6" />,
@@ -132,24 +154,40 @@ const amenidadesPremium = [
 	},
 	{
 		icon: <Wind className="w-6 h-6" />,
-		titulo: "Planta Eléctrica",
-		descripcion: "Energía garantizada 24/7",
+		titulo: "Planta Eléctrica y Tanque de agua",
+		descripcion: "Energía y agua garantizada 24/7",
 	},
 ];
 
 // Galería de espacios
 const galeriaEspacios = [
-	{ src: "/images/posadas/inmarcesible/espacios/churuata-social-1.jpg", alt: "Churuata social principal", categoria: "Churuatas" },
-	{ src: "/images/posadas/inmarcesible/espacios/churuata-social-2.jpg", alt: "Segunda churuata social", categoria: "Churuatas" },
-	{ src: "/images/posadas/inmarcesible/espacios/cocina-industrial.jpg", alt: "Cocina industrial equipada", categoria: "Cocina" },
-	{ src: "/images/posadas/inmarcesible/espacios/parrillera.jpg", alt: "Área de parrillera", categoria: "Exteriores" },
-	{ src: "/images/posadas/inmarcesible/espacios/piscina-1.jpg", alt: "Piscina principal", categoria: "Piscinas" },
-	{ src: "/images/posadas/inmarcesible/espacios/jardin.jpg", alt: "Jardines y áreas verdes", categoria: "Exteriores" },
+	{ src: "/images/posadas/inmar/espacios/social1.webp", alt: "Churuata social principal", categoria: "Churuatas" },
+	{ src: "/images/posadas/inmar/espacios/social2.webp", alt: "Segunda churuata social", categoria: "Churuatas" },
+	{ src: "/images/posadas/inmar/cocina1.webp", alt: "Cocina industrial equipada", categoria: "Cocina" },
+	{ src: "/images/posadas/inmar/espacios/exterior1.webp", alt: "Área de parrillera", categoria: "Exteriores" },
+	{ src: "/images/posadas/inmar/espacios/piscina.webp", alt: "Piscina principal", categoria: "Piscinas" },
+	{ src: "/images/posadas/inmar/espacios/jardin.webp", alt: "Jardines y áreas verdes", categoria: "Exteriores" },
 ];
+
+type Habitacion = {
+	id: string;
+	nombre: string;
+	descripcion: string;
+	capacidad: number;
+	precio: number;
+	amenidades: string[];
+	imagenes: string[];
+	disponibles: number;
+};
 
 export default function InmarcesiblePage() {
 	const [lightboxOpen, setLightboxOpen] = useState(false);
 	const [lightboxImage, setLightboxImage] = useState("");
+
+	// Estados para galería de habitaciones
+	const [roomGalleryOpen, setRoomGalleryOpen] = useState(false);
+	const [currentRoom, setCurrentRoom] = useState<Habitacion | null>(null);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
 	const openLightbox = (src: string) => {
 		setLightboxImage(src);
@@ -159,6 +197,30 @@ export default function InmarcesiblePage() {
 	const closeLightbox = () => {
 		setLightboxOpen(false);
 		setLightboxImage("");
+	};
+
+	const openRoomGallery = (habitacion: Habitacion, startIndex: number = 0) => {
+		setCurrentRoom(habitacion);
+		setCurrentImageIndex(startIndex);
+		setRoomGalleryOpen(true);
+	};
+
+	const closeRoomGallery = () => {
+		setRoomGalleryOpen(false);
+		setCurrentRoom(null);
+		setCurrentImageIndex(0);
+	};
+
+	const nextImage = () => {
+		if (currentRoom) {
+			setCurrentImageIndex((prev) => (prev + 1) % currentRoom.imagenes.length);
+		}
+	};
+
+	const prevImage = () => {
+		if (currentRoom) {
+			setCurrentImageIndex((prev) => (prev - 1 + currentRoom.imagenes.length) % currentRoom.imagenes.length);
+		}
 	};
 
 	// Calcular totales
@@ -173,7 +235,7 @@ export default function InmarcesiblePage() {
 			<section className="relative min-h-[70vh] flex items-center justify-center bg-primary-600">
 				<div
 					className="absolute inset-0 bg-cover bg-center"
-					style={{ backgroundImage: "url(/images/posadas/inmarcesible/hero.jpg)" }}
+					style={{ backgroundImage: "url(/images/inmarcesible-hero.webp)" }}
 				/>
 				<div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
 
@@ -234,7 +296,8 @@ export default function InmarcesiblePage() {
 								key={habitacion.id}
 								habitacion={habitacion}
 								reverse={index % 2 !== 0}
-								onImageClick={openLightbox}
+								onImageClick={(idx) => openRoomGallery(habitacion, idx)}
+								onViewAllClick={() => openRoomGallery(habitacion)}
 							/>
 						))}
 					</div>
@@ -256,7 +319,13 @@ export default function InmarcesiblePage() {
 
 					<div className="space-y-12">
 						{habitacionesPorArea.churuataAlta.map((habitacion, index) => (
-							<HabitacionCard key={habitacion.id} habitacion={habitacion} reverse={false} onImageClick={openLightbox} />
+							<HabitacionCard
+								key={habitacion.id}
+								habitacion={habitacion}
+								reverse={false}
+								onImageClick={(idx) => openRoomGallery(habitacion, idx)}
+								onViewAllClick={() => openRoomGallery(habitacion)}
+							/>
 						))}
 					</div>
 				</div>
@@ -281,7 +350,8 @@ export default function InmarcesiblePage() {
 								key={habitacion.id}
 								habitacion={habitacion}
 								reverse={index % 2 !== 0}
-								onImageClick={openLightbox}
+								onImageClick={(idx) => openRoomGallery(habitacion, idx)}
+								onViewAllClick={() => openRoomGallery(habitacion)}
 							/>
 						))}
 					</div>
@@ -359,7 +429,7 @@ export default function InmarcesiblePage() {
 				</div>
 			</section>
 
-			{/* Lightbox */}
+			{/* Lightbox Simple (espacios comunes) */}
 			{lightboxOpen && (
 				<div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4" onClick={closeLightbox}>
 					<button
@@ -370,6 +440,17 @@ export default function InmarcesiblePage() {
 					</button>
 					<img src={lightboxImage} alt="Vista ampliada" className="max-w-full max-h-full object-contain" />
 				</div>
+			)}
+
+			{/* Lightbox con Carrusel (habitaciones) */}
+			{roomGalleryOpen && currentRoom && (
+				<RoomGalleryLightbox
+					room={currentRoom}
+					currentIndex={currentImageIndex}
+					onClose={closeRoomGallery}
+					onNext={nextImage}
+					onPrev={prevImage}
+				/>
 			)}
 		</>
 	);
@@ -387,68 +468,181 @@ const HabitacionCard = ({
 	habitacion,
 	reverse,
 	onImageClick,
+	onViewAllClick,
 }: {
-	habitacion: any;
+	habitacion: Habitacion;
 	reverse: boolean;
-	onImageClick: (src: string) => void;
-}) => (
-	<div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${reverse ? "lg:flex-row-reverse" : ""}`}>
-		{/* Galería de imágenes */}
-		<div className={`${reverse ? "lg:order-2" : ""}`}>
-			<div className="grid grid-cols-2 gap-4">
-				{habitacion.imagenes.map((img: string, idx: number) => (
-					<div
-						key={idx}
-						className={`relative overflow-hidden rounded-sm group cursor-pointer ${idx === 0 ? "col-span-2 h-80" : "h-60"}`}
-						onClick={() => onImageClick(img)}
-					>
-						<div
-							className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-							style={{ backgroundImage: `url(${img})` }}
-						/>
-					</div>
-				))}
-			</div>
-		</div>
+	onImageClick: (index: number) => void;
+	onViewAllClick: () => void;
+}) => {
+	const previewImages = habitacion.imagenes.slice(0, 3);
+	const hasMoreImages = habitacion.imagenes.length > 3;
 
-		{/* Información */}
-		<div className={`${reverse ? "lg:order-1" : ""}`}>
-			<div className="flex items-center justify-between mb-4">
-				<h3 className="font-display text-3xl text-primary-600">{habitacion.nombre}</h3>
-				{habitacion.disponibles > 1 && (
-					<span className="text-xs text-accent-500 font-semibold">{habitacion.disponibles} disponibles</span>
+	return (
+		<div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${reverse ? "lg:flex-row-reverse" : ""}`}>
+			{/* Galería de imágenes */}
+			<div className={`${reverse ? "lg:order-2" : ""}`}>
+				<div className="grid grid-cols-2 gap-4">
+					{previewImages.map((img, idx) => (
+						<div
+							key={idx}
+							className={`relative overflow-hidden rounded-sm group cursor-pointer ${idx === 0 ? "col-span-2 h-80" : "h-60"}`}
+							onClick={() => onImageClick(idx)}
+						>
+							<div
+								className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+								style={{ backgroundImage: `url(${img})` }}
+							/>
+							<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+						</div>
+					))}
+				</div>
+
+				{/* Botón "Ver más fotos" */}
+				{hasMoreImages && (
+					<button
+						onClick={onViewAllClick}
+						className="mt-4 w-full py-3 px-4 border-2 border-accent-500 text-accent-500 hover:bg-accent-500 hover:text-primary-600 transition-all duration-300 flex items-center justify-center gap-2 font-semibold tracking-wider"
+					>
+						<ImageIcon className="w-5 h-5" />
+						Ver todas las fotos ({habitacion.imagenes.length})
+					</button>
 				)}
 			</div>
 
-			<p className="text-primary-600/80 mb-6">{habitacion.descripcion}</p>
+			{/* Información */}
+			<div className={`${reverse ? "lg:order-1" : ""}`}>
+				<div className="flex items-center justify-between mb-4">
+					<h3 className="font-display text-3xl text-primary-600">{habitacion.nombre}</h3>
+					{habitacion.disponibles > 1 && (
+						<span className="text-xs text-accent-500 font-semibold">{habitacion.disponibles} disponibles</span>
+					)}
+				</div>
 
-			<div className="flex items-baseline gap-3 mb-6">
-				<span className="font-display text-4xl text-accent-500">${habitacion.precio}</span>
-				<span className="text-primary-600/60 text-sm">por noche</span>
+				<p className="text-primary-600/80 mb-6">{habitacion.descripcion}</p>
+
+				<div className="flex items-baseline gap-3 mb-6">
+					<span className="font-display text-4xl text-accent-500">${habitacion.precio}</span>
+					<span className="text-primary-600/60 text-sm">por noche</span>
+				</div>
+
+				<div className="flex items-center gap-2 text-primary-600/70 mb-6">
+					<Users className="w-5 h-5" />
+					<span>
+						Hasta {habitacion.capacidad} {habitacion.capacidad === 1 ? "persona" : "personas"}
+					</span>
+				</div>
+
+				<div className="mb-8">
+					<h4 className="font-semibold text-primary-600 mb-3">Amenidades:</h4>
+					<ul className="grid grid-cols-2 gap-2">
+						{habitacion.amenidades.map((amenidad, idx) => (
+							<li key={idx} className="text-sm text-primary-600/70 flex items-center gap-2">
+								<div className="w-1.5 h-1.5 bg-accent-500 rounded-full" />
+								{amenidad}
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<Button variant="secondary" href={`/reservas?posada=inmarcesible&habitacion=${habitacion.id}`}>
+					Reservar esta habitación
+				</Button>
 			</div>
-
-			<div className="flex items-center gap-2 text-primary-600/70 mb-6">
-				<Users className="w-5 h-5" />
-				<span>
-					Hasta {habitacion.capacidad} {habitacion.capacidad === 1 ? "persona" : "personas"}
-				</span>
-			</div>
-
-			<div className="mb-8">
-				<h4 className="font-semibold text-primary-600 mb-3">Amenidades:</h4>
-				<ul className="grid grid-cols-2 gap-2">
-					{habitacion.amenidades.map((amenidad: string, idx: number) => (
-						<li key={idx} className="text-sm text-primary-600/70 flex items-center gap-2">
-							<div className="w-1.5 h-1.5 bg-accent-500 rounded-full" />
-							{amenidad}
-						</li>
-					))}
-				</ul>
-			</div>
-
-			<Button variant="secondary" href={`/reservas?posada=inmarcesible&habitacion=${habitacion.id}`}>
-				Reservar esta habitación
-			</Button>
 		</div>
-	</div>
-);
+	);
+};
+
+// Lightbox de Galería de Habitación con Carrusel
+const RoomGalleryLightbox = ({
+	room,
+	currentIndex,
+	onClose,
+	onNext,
+	onPrev,
+}: {
+	room: Habitacion;
+	currentIndex: number;
+	onClose: () => void;
+	onNext: () => void;
+	onPrev: () => void;
+}) => {
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") onClose();
+			if (e.key === "ArrowLeft") onPrev();
+			if (e.key === "ArrowRight") onNext();
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [onClose, onNext, onPrev]);
+
+	return (
+		<div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+			{/* Close Button */}
+			<button
+				onClick={onClose}
+				className="absolute top-4 right-4 md:top-8 md:right-8 text-neutral-50 hover:text-accent-500 transition-all duration-300 z-50 hover:scale-110"
+				aria-label="Cerrar galería"
+			>
+				<X className="w-8 h-8 md:w-10 md:h-10" />
+			</button>
+
+			{/* Room Title */}
+			<div className="absolute top-12 left-4 md:top-8 md:left-8 z-50">
+				<h3 className="text-neutral-50 font-display text-2xl md:text-3xl mb-1">{room.nombre}</h3>
+				<p className="text-neutral-50/70 text-sm">{room.descripcion}</p>
+			</div>
+
+			{/* Previous Button */}
+			<button
+				onClick={onPrev}
+				className="absolute left-4 md:left-8 text-neutral-50 hover:text-accent-500 transition-all duration-300 z-50 hover:scale-110 hover:-translate-x-1"
+				aria-label="Imagen anterior"
+			>
+				<ChevronLeft className="w-8 h-8 md:w-12 md:h-12" />
+			</button>
+
+			{/* Image */}
+			<div className="relative max-w-7xl max-h-[80vh] mx-4">
+				<img
+					src={room.imagenes[currentIndex]}
+					alt={`${room.nombre} - Foto ${currentIndex + 1}`}
+					className="max-w-full max-h-[80vh] object-contain transition-opacity duration-300"
+				/>
+
+				{/* Image Counter */}
+				<div className="absolute -bottom-8 md:-bottom-12 left-1/2 transform -translate-x-1/2 text-neutral-50/80 text-sm md:text-base font-light tracking-wider">
+					{currentIndex + 1} / {room.imagenes.length}
+				</div>
+			</div>
+
+			{/* Next Button */}
+			<button
+				onClick={onNext}
+				className="absolute right-4 md:right-8 text-neutral-50 hover:text-accent-500 transition-all duration-300 z-50 hover:scale-110 hover:translate-x-1"
+				aria-label="Siguiente imagen"
+			>
+				<ChevronRight className="w-8 h-8 md:w-12 md:h-12" />
+			</button>
+
+			{/* Thumbnail Strip (solo desktop) */}
+			<div className="hidden lg:flex absolute bottom-8 left-1/2 transform -translate-x-1/2 gap-2 max-w-4xl overflow-x-auto px-4">
+				{room.imagenes.map((img, idx) => (
+					<button
+						key={idx}
+						onClick={() => {
+							// Esta función se maneja con el currentIndex state del padre
+						}}
+						className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-sm overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+							idx === currentIndex ? "border-accent-500 scale-110" : "border-transparent opacity-60 hover:opacity-100"
+						}`}
+					>
+						<div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${img})` }} />
+					</button>
+				))}
+			</div>
+		</div>
+	);
+};

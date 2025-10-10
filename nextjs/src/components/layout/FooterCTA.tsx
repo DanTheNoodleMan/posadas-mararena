@@ -7,7 +7,7 @@ const FooterCTA = () => {
 	return (
 		<>
 			{/* CTA Section - Potente con imagen de fondo */}
-			<section className="relative min-h-[600px] flex items-center justify-center">
+			<section id="contacto" className="relative min-h-[600px] flex items-center justify-center">
 				{/* Background Image */}
 				<div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(/images/inmarcesible-hero.webp)" }} />
 

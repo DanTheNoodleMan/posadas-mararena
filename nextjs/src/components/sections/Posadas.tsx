@@ -171,7 +171,7 @@ const Posadas = () => {
 					/>
 
 					{/* Dark Overlay - responsive height to cover text content */}
-					<div className="absolute top-0 left-0 right-0 h-[65%] md:h-[55%] lg:h-[40%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
+					<div className="absolute top-0 left-0 right-0 h-[85%] md:h-[55%] lg:h-[40%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
 
 					{/* Gradient Dissolve Bottom - blends into white background */}
 					<div className="absolute bottom-0 left-0 right-0 h-[150px] md:h-[200px] bg-gradient-to-t from-neutral-50 via-neutral-50/60 to-transparent" />
