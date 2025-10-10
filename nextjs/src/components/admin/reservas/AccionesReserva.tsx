@@ -28,7 +28,7 @@ export default function AccionesReserva({ reserva }: AccionesReservaProps) {
   const [error, setError] = useState("");
 
   const confirmarPago = async () => {
-    if (!confirm("¿Confirmar que se recibió el pago de esta reserva?")) return;
+    if (!confirm("¿Confirma que se recibió el pago de esta reserva?")) return;
 
     setLoading(true);
     setError("");
@@ -50,7 +50,7 @@ export default function AccionesReserva({ reserva }: AccionesReservaProps) {
       alert("✅ Pago confirmado exitosamente");
     } catch (err: any) {
       console.error("Error al confirmar pago:", err);
-      setError("Error al confirmar el pago. Intenta de nuevo.");
+      setError("Error al confirmar el pago. Intente de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export default function AccionesReserva({ reserva }: AccionesReservaProps) {
 
   const cancelarReserva = async () => {
     const motivo = prompt(
-      "Ingresa el motivo de cancelación:"
+      "Por favor, ingrese el motivo de cancelación:"
     );
 
     if (!motivo || motivo.trim() === "") return;
@@ -82,16 +82,16 @@ export default function AccionesReserva({ reserva }: AccionesReservaProps) {
       alert("❌ Reserva cancelada");
     } catch (err: any) {
       console.error("Error al cancelar:", err);
-      setError("Error al cancelar la reserva. Intenta de nuevo.");
+      setError("Error al cancelar la reserva. Intente de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
   const enviarWhatsApp = () => {
-    const mensaje = `Hola ${reserva.nombre_cliente}! 
+    const mensaje = `Hola ${reserva.nombre_cliente}, 
 
-Te escribimos de Mararena Posadas sobre tu reserva ${reserva.codigo_reserva}.`;
+Le escribimos de Mararena Posadas sobre su reserva ${reserva.codigo_reserva}.`;
 
     window.open(
       `https://wa.me/${reserva.telefono_cliente}?text=${encodeURIComponent(

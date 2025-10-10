@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
 						<p className="text-xs text-neutral-500 text-center">
 							Credenciales por defecto:
 							<br />
-							<code className="bg-neutral-100 px-2 py-1 rounded text-neutral-700">admin@mararenaposadas.com</code>
+							<code className="bg-neutral-100 px-2 py-1 rounded text-neutral-700">mararenaposadas@gmail.com</code>
 						</p>
 					</div>
 				</div>

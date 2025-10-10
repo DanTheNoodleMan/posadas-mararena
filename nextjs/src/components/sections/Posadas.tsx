@@ -35,10 +35,10 @@ const Posadas = () => {
 
 								{/* CTA Button */}
 								<Link
-									href="/reservas?posada=vista-al-mar"
+									href="/posadas/vista-al-mar"
 									className="inline-block px-8 py-4 bg-accent-500 text-primary-600 font-semibold tracking-wider hover:bg-accent-600 transition-colors duration-300 text-center"
 								>
-									RESERVAR AHORA
+									EXPLORAR
 								</Link>
 							</div>
 						</div>
@@ -100,10 +100,10 @@ const Posadas = () => {
 
 								{/* CTA Button */}
 								<Link
-									href="/reservas?posada=inmarcesible"
+									href="/posadas/inmarcesible"
 									className="inline-block px-8 py-4 bg-accent-500 text-primary-600 font-semibold tracking-wider hover:bg-accent-600 transition-colors duration-300 text-center"
 								>
-									RESERVAR AHORA
+									EXPLORAR
 								</Link>
 							</div>
 						</div>

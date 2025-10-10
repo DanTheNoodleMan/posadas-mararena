@@ -359,29 +359,6 @@ export default function InmarcesiblePage() {
 				</div>
 			</section>
 
-			{/* CTA Final */}
-			<section className="bg-primary-600 py-16 md:py-24">
-				<div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
-					<h2 className="font-display text-4xl md:text-5xl text-neutral-50 mb-6">¿Listo para tu Evento?</h2>
-					<p className="text-neutral-50/80 text-lg mb-12">
-						Reserva ahora y asegura las mejores fechas para tu celebración en Inmarcesible
-					</p>
-					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<Button variant="primary" href="/reservas?posada=inmarcesible" size="lg">
-							Reservar Ahora
-						</Button>
-						<Button
-							variant="ghost"
-							href="https://wa.me/584123112746"
-							external
-							className="border-neutral-50 text-neutral-50 hover:bg-neutral-50 hover:text-primary-600"
-						>
-							Consultar Disponibilidad
-						</Button>
-					</div>
-				</div>
-			</section>
-
 			{/* Lightbox */}
 			{lightboxOpen && (
 				<div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4" onClick={closeLightbox}>
