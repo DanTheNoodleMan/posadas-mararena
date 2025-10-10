@@ -18,7 +18,6 @@ const navigation: NavItem[] = [
 	{ name: "Reservas", href: "/admin/reservas", icon: FileText },
 	{ name: "Nueva Reserva", href: "/admin/reservas/nueva", icon: PlusCircle },
 	{ name: "Calendario", href: "/admin/calendario", icon: Calendar },
-	{ name: "Reportes", href: "/admin/reportes", icon: BarChart3 },
 	{ name: "Configuración", href: "/admin/configuracion", icon: Settings },
 ];
 

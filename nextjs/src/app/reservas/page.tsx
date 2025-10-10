@@ -281,7 +281,6 @@ export default function ReservasPage() {
 					fecha_inicio: fechaInicio,
 					fecha_fin: fechaFin,
 					habitaciones_ids: habitacionesSeleccionadas,
-					num_huespedes: numHuespedes,
 				});
 
 				if (!result.success || !result.holdId) {
@@ -300,7 +299,6 @@ export default function ReservasPage() {
 						habitacion_id: null,
 						fecha_inicio: fechaInicio,
 						fecha_fin: fechaFin,
-						num_huespedes: numHuespedes,
 						expira_en: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
 						tipo_reserva: "posada_completa",
 					})
@@ -380,7 +378,7 @@ export default function ReservasPage() {
 						precio_por_noche: posadaData.precio_posada_completa,
 						precio_total: precioTotal,
 						session_id: sessionId,
-						estado: "confirmada",
+						estado: "pendiente",
 					})
 					.select()
 					.single();

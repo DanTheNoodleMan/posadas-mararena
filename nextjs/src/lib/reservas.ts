@@ -47,7 +47,6 @@ export interface CreateHoldMultipleData {
 	fecha_inicio: string;
 	fecha_fin: string;
 	habitaciones_ids: string[]; // Array de IDs de habitaciones
-	num_huespedes: number;
 }
 
 export interface CreateReservaMultipleData {
@@ -201,7 +200,7 @@ export async function crearReserva(
 			.from("reservas")
 			.insert({
 				...data,
-				estado: "confirmada",
+				estado: "pendiente", // Estado inicial
 			})
 			.select()
 			.single();
@@ -393,7 +392,6 @@ export async function crearHoldMultiple(
 				habitacion_id: null, // NULL para holds múltiples
 				fecha_inicio: data.fecha_inicio,
 				fecha_fin: data.fecha_fin,
-				num_huespedes: data.num_huespedes,
 				expira_en: expiraEn.toISOString(),
 			})
 			.select()
@@ -502,7 +500,7 @@ export async function crearReservaMultiple(
 				precio_por_noche: precioTotal, // Precio por noche de todas las habitaciones
 				precio_total: precioTotal * numNoches,
 				tipo_reserva: "habitacion",
-				estado: "confirmada",
+				estado: "pendiente", // Estado inicial
 			})
 			.select()
 			.single();

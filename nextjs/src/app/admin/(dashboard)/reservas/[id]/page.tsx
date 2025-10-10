@@ -1,5 +1,5 @@
-// Archivo: src/app/admin/reservas/[id]/page.tsx
-// Página de detalle de una reserva individual
+// Archivo: src/app/admin/(dashboard)/reservas/[id]/page.tsx
+// Página de detalle de una reserva individual - CORREGIDA
 
 import { createAdminClient } from "@/lib/auth-admin";
 import { notFound } from "next/navigation";
@@ -17,24 +17,43 @@ export default async function ReservaDetallePage({ params }: Props) {
 	const { id } = await params;
 	const supabase = await createAdminClient();
 
-	// Obtener reserva completa
+	// Obtener reserva base primero
 	const { data: reserva, error } = await supabase
 		.from("reservas")
 		.select(
 			`
       *,
-      posada:posadas(id, nombre, capacidad_maxima),
-      habitaciones:reservas_habitaciones(
-        habitacion:habitaciones(id, nombre, numero, precio_noche, capacidad)
-      )
+      posada:posadas(id, nombre, capacidad_maxima)
     `
 		)
 		.eq("id", id)
 		.single();
 
 	if (error || !reserva) {
+		console.error("Error al cargar reserva:", error);
 		notFound();
 	}
+
+	// Cargar habitaciones por separado
+	const { data: habitacionesData } = await supabase
+		.from("reservas_habitaciones")
+		.select(
+			`
+      habitacion:habitaciones(
+        id,
+        nombre,
+        capacidad,
+        precio_por_noche
+      )
+    `
+		)
+		.eq("reserva_id", id);
+
+	// Agregar habitaciones a la reserva
+	const reservaCompleta = {
+		...reserva,
+		habitaciones: habitacionesData || [],
+	};
 
 	// Obtener historial de cambios
 	const { data: logs } = await supabase.from("logs_reservas").select("*").eq("reserva_id", id).order("created_at", { ascending: false });
@@ -51,7 +70,7 @@ export default async function ReservaDetallePage({ params }: Props) {
 
 			{/* Título */}
 			<div>
-				<h1 className="text-3xl font-bold text-neutral-900">{reserva.codigo_reserva}</h1>
+				<h1 className="text-3xl font-bold text-neutral-900">{reservaCompleta.codigo_reserva}</h1>
 				<p className="mt-1 text-sm text-neutral-500">Detalles completos de la reserva</p>
 			</div>
 
@@ -59,7 +78,7 @@ export default async function ReservaDetallePage({ params }: Props) {
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				{/* Columna principal - Detalles */}
 				<div className="lg:col-span-2 space-y-6">
-					<DetalleReserva reserva={reserva} />
+					<DetalleReserva reserva={reservaCompleta} />
 
 					{/* Historial */}
 					{logs && logs.length > 0 && <HistorialReserva logs={logs} />}
@@ -67,7 +86,7 @@ export default async function ReservaDetallePage({ params }: Props) {
 
 				{/* Sidebar - Acciones */}
 				<div className="lg:col-span-1">
-					<AccionesReserva reserva={reserva} />
+					<AccionesReserva reserva={reservaCompleta} />
 				</div>
 			</div>
 		</div>

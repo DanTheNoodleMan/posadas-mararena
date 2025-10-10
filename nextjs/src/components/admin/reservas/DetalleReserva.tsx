@@ -24,7 +24,7 @@ interface Reserva {
 		habitacion: {
 			nombre: string;
 			numero: string;
-			precio_noche: number;
+			precio_por_noche: number;
 			capacidad: number;
 		};
 	}>;
@@ -53,6 +53,8 @@ function calcularNoches(inicio: string, fin: string) {
 
 export default function DetalleReserva({ reserva }: DetalleReservaProps) {
 	const noches = calcularNoches(reserva.fecha_inicio, reserva.fecha_fin);
+
+	console.log("Reserva detalles:", reserva);
 
 	return (
 		<div className="bg-white shadow rounded-lg divide-y divide-neutral-200">
@@ -134,7 +136,7 @@ export default function DetalleReserva({ reserva }: DetalleReservaProps) {
 									<p className="text-sm font-medium text-neutral-900">{item.habitacion.nombre}</p>
 									<p className="text-xs text-neutral-500">Capacidad: {item.habitacion.capacidad} personas</p>
 								</div>
-								<p className="text-sm font-semibold text-neutral-900">${item.habitacion.precio_noche}/noche</p>
+								<p className="text-sm font-semibold text-neutral-900">${item.habitacion.precio_por_noche}/noche</p>
 							</li>
 						))}
 					</ul>
