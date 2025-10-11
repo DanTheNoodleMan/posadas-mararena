@@ -230,7 +230,7 @@ export default function PosadasPage() {
 			{/* Comparison CTA Section */}
 			<section className="bg-neutral-100 py-16">
 				<div className="max-w-4xl mx-auto px-6 text-center">
-					<h3 className="font-display text-3xl md:text-4xl text-primary-600 mb-6">¿No está seguro cuál elegir?</h3>
+					<h3 className="font-display text-3xl md:text-4xl text-primary-600 mb-6">¿No está seguro de cuál elegir?</h3>
 					<p className="text-primary-600/80 text-lg mb-8">
 						Contáctenos y le ayudaremos a encontrar la posada perfecta para su ocasión
 					</p>
