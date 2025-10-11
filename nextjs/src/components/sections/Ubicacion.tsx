@@ -17,7 +17,7 @@ const Ubicacion = () => {
 					<div className="max-w-xl mx-auto lg:mx-0">
 						<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">UBICACIÓN PRIVILEGIADA</p>
 						<h2 className="font-display text-5xl md:text-6xl lg:text-7xl text-primary-600 mb-8 leading-tight">
-							PARAÍSO LE ESPERA
+							EL PARAÍSO LE ESPERA
 						</h2>
 						<p className="text-primary-600/80 text-lg leading-relaxed mb-12">
 							En la costa central de Venezuela, donde las montañas encuentran el Mar Caribe. Un destino que combina playa,

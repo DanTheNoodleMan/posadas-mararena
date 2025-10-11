@@ -317,7 +317,7 @@ export default async function DashboardPage() {
 															<Eye className="w-4 h-4" />
 														</Link>
 														<a
-															href={`https://wa.me/${reserva.telefono_cliente.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola ${reserva.nombre_cliente}! Te escribo sobre tu reserva ${reserva.codigo_reserva}`)}`}
+															href={`https://wa.me/${reserva.telefono_cliente.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola ${reserva.nombre_cliente}! Le escribo sobre su reserva ${reserva.codigo_reserva}`)}`}
 															target="_blank"
 															rel="noopener noreferrer"
 															className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
@@ -449,7 +449,7 @@ export default async function DashboardPage() {
 															<Eye className="w-4 h-4" />
 														</Link>
 														<a
-															href={`https://wa.me/${reserva.telefono_cliente.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola ${reserva.nombre_cliente}! Te escribo sobre tu reserva ${reserva.codigo_reserva}`)}`}
+															href={`https://wa.me/${reserva.telefono_cliente.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola ${reserva.nombre_cliente}! Le escribo sobre su reserva ${reserva.codigo_reserva}`)}`}
 															target="_blank"
 															rel="noopener noreferrer"
 															className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition-colors"

@@ -220,7 +220,7 @@ export default function VistaAlMarPage() {
 						<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">ALOJAMIENTO</p>
 						<h2 className="font-display text-4xl md:text-5xl text-primary-600 mb-6">Nuestras Habitaciones</h2>
 						<p className="text-primary-600/80 text-lg max-w-2xl mx-auto">
-							Espacios diseñados para tu confort, cada uno con su carácter único
+							Espacios diseñados para su confort, cada uno con su carácter único
 						</p>
 					</div>
 
@@ -238,7 +238,7 @@ export default function VistaAlMarPage() {
 
 					{/* Precio posada completa */}
 					<div className="mt-16 bg-primary-600 p-8 md:p-12 rounded-sm text-center">
-						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">¿Reservas la Posada Completa?</h3>
+						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">¿Le gustaría la posada completa?</h3>
 						<p className="text-neutral-50/80 text-lg mb-6">Disfruta de todas las 6 habitaciones y espacios exclusivos</p>
 						<div className="flex items-baseline justify-center gap-3 mb-8">
 							<span className="font-display text-5xl md:text-6xl text-accent-500">$1,250</span>

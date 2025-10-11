@@ -5,7 +5,7 @@ import Button from "@/components/ui/button";
 
 const features = [
 	{
-		title: "Piscinas Infinity",
+		title: "Piscinas infinity",
 		description: "que abrazan el horizonte",
 	},
 	{
@@ -17,7 +17,7 @@ const features = [
 		description: "en lujo tropical",
 	},
 	{
-		title: "Amplios Espacios",
+		title: "Amplios espacios",
 		description: "para hasta 31 personas",
 	},
 ];

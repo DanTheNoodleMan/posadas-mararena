@@ -1052,7 +1052,7 @@ function CalendarioDisponibilidadSidebar({
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-200 border border-green-400 rounded"></div>
-          <span className="text-neutral-700">Tu reserva</span>
+          <span className="text-neutral-700">Su reserva</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-white border border-neutral-300 rounded"></div>

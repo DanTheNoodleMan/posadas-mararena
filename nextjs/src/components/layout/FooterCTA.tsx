@@ -20,7 +20,7 @@ const FooterCTA = () => {
 						<h2 className="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-50 mb-8 leading-tight">
 							Su Escape al Caribe
 							<br />
-							<span className="text-accent-500">Le Espera</span>
+							<span className="text-accent-500">le Espera</span>
 						</h2>
 						<p className="text-neutral-50/90 text-xl md:text-2xl leading-relaxed mb-12 max-w-2xl mx-auto">
 							Reserva ahora y descubre por qué somos el destino favorito de quienes buscan lujo, tranquilidad y autenticidad
@@ -99,7 +99,7 @@ const FooterCTA = () => {
 							{/* Mi Reserva */}
 							<div>
 								<h4 className="font-semibold text-accent-500 mb-4 tracking-wider text-sm">MI RESERVA</h4>
-								<p className="text-sm text-neutral-50/80 mb-4">Consulta el estado de tu reserva con tu código</p>
+								<p className="text-sm text-neutral-50/80 mb-4">Consulta el estado de su reserva con su código</p>
 								<Link
 									href="/consultar-reserva"
 									className="inline-flex items-center gap-2 px-6 py-3 bg-accent-500/10 border border-accent-500 text-accent-500 text-sm font-semibold hover:bg-accent-500 hover:text-primary-600 transition-all duration-300"

@@ -358,7 +358,7 @@ export default function InmarcesiblePage() {
 
 					{/* Precio posada completa */}
 					<div className="mt-16 bg-primary-600 p-8 md:p-12 rounded-sm text-center">
-						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">¿Reservas la Posada Completa?</h3>
+						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">¿Le gustaría la posada completa?</h3>
 						<p className="text-neutral-50/80 text-lg mb-6">
 							Disfruta de todas las 11 habitaciones y espacios para eventos hasta 50 personas
 						</p>
@@ -380,7 +380,7 @@ export default function InmarcesiblePage() {
 						<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">INSTALACIONES</p>
 						<h2 className="font-display text-4xl md:text-5xl text-primary-600 mb-6">Amenidades para Eventos</h2>
 						<p className="text-primary-600/80 text-lg max-w-2xl mx-auto">
-							Todo lo necesario para hacer de tu celebración un éxito
+							Todo lo necesario para hacer de su celebración un éxito
 						</p>
 					</div>
 

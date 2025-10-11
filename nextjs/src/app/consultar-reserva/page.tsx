@@ -336,7 +336,7 @@ export default function ConsultarReservaPage() {
 									{puedeCancelar(reserva.fecha_inicio, reserva.estado).puede ? (
 										<div className="bg-amber-50 border border-amber-300 p-4 rounded-sm mb-4">
 											<p className="text-sm text-amber-800">
-												<strong>Política de cancelación:</strong> Puede cancelar tu reserva hasta 72 horas antes
+												<strong>Política de cancelación:</strong> Puede cancelar su reserva hasta 72 horas antes
 												del check-in.
 											</p>
 										</div>
@@ -345,7 +345,7 @@ export default function ConsultarReservaPage() {
 											<p className="text-sm text-red-800">
 												<strong>No se puede cancelar:</strong>{" "}
 												{puedeCancelar(reserva.fecha_inicio, reserva.estado).motivo}. Para cambios de última hora,
-												por favor contáctanos por WhatsApp.
+												por favor contáctenos por WhatsApp.
 											</p>
 										</div>
 									)}
@@ -407,7 +407,7 @@ export default function ConsultarReservaPage() {
 					{!reserva && !error && (
 						<div className="text-center mt-12">
 							<p className="text-primary-600/70 mb-4">¿No encuentra su código de reserva?</p>
-							<p className="text-primary-600/70 mb-6">Contáctanos por WhatsApp para ayudarle.</p>
+							<p className="text-primary-600/70 mb-6">Contáctenos por WhatsApp para ayudarle.</p>
 							<Button
 								variant="secondary"
 								href="https://wa.me/584123112746?text=Hola!%20No%20encuentro%20mi%20c%C3%B3digo%20de%20reserva"

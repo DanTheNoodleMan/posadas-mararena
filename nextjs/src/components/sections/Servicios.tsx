@@ -25,7 +25,7 @@ const Servicios = () => {
 		{
 			id: "cocinas",
 			title: "Cocinas Equipadas",
-			description: "Espacios gourmet para crear memorias culinarias en familia. O simplemente disfrutar un café al amanecer.",
+			description: "Espacios gourmet para crear memorias culinarias en familia, o simplemente disfrutar un café al amanecer.",
 			image: "/images/servicios/cocinas.webp",
 			icon: <UtensilsCrossed className="w-6 h-6" />,
 			size: "small",
@@ -34,7 +34,7 @@ const Servicios = () => {
 			id: "momentos",
 			title: "Momentos Auténticos",
 			description:
-				"No organizamos actividades. Te damos el espacio para que redescubras el placer de no hacer nada, de conversar sin prisa, de disfrutar un atardecer sin horarios. Aquí, la experiencia eres tú.",
+				"No organizamos actividades. Le damos el espacio para que redescubra el placer de no hacer nada, de conversar sin prisa, de disfrutar un atardecer sin horarios. Aquí, la experiencia es usted.",
 			image: "/images/servicios/momentos.webp",
 			icon: <Leaf className="w-6 h-6" />,
 			size: "large",
@@ -61,7 +61,7 @@ const Servicios = () => {
 		<section id="servicios" className="relative py-24 px-6 md:px-12 lg:px-24 bg-neutral-50">
 			{/* Header */}
 			<div className="max-w-7xl mx-auto text-center mb-16">
-				<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">VIVE LA EXPERIENCIA</p>
+				<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">VIVA LA EXPERIENCIA</p>
 				<h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-600 mb-6">
 					SERVICIOS QUE DESPIERTAN LOS SENTIDOS
 				</h2>

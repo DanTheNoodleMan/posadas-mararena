@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Waves, Users, Home, UtensilsCrossed, Wifi, ParkingCircle } from "lucide-react";
+import { Waves, PartyPopper, Users, Home, UtensilsCrossed, Wifi, ParkingCircle } from "lucide-react";
 
 const Posadas = () => {
 	// Refs for intersection observer
@@ -101,13 +101,13 @@ const Posadas = () => {
 										/>
 										<AmenityItem 
 											icon={<ParkingCircle className="w-5 h-5" />} 
-											text="Estacionamiento" 
+											text="Estacionamiento Seguro" 
 											isVisible={vistaAlMarVisible}
 											delay={450}
 										/>
 										<AmenityItem 
 											icon={<Users className="w-5 h-5" />} 
-											text="Hasta 15 Huéspedes" 
+											text="Hasta 12 Huéspedes" 
 											isVisible={vistaAlMarVisible}
 											delay={500}
 										/>
@@ -171,7 +171,7 @@ const Posadas = () => {
 					/>
 
 					{/* Dark Overlay - responsive height to cover text content */}
-					<div className="absolute top-0 left-0 right-0 h-[85%] md:h-[55%] lg:h-[40%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
+					<div className="absolute top-0 left-0 right-0 h-[85%] md:h-[55%] lg:h-[50%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
 
 					{/* Gradient Dissolve Bottom - blends into white background */}
 					<div className="absolute bottom-0 left-0 right-0 h-[150px] md:h-[200px] bg-gradient-to-t from-neutral-50 via-neutral-50/60 to-transparent" />
@@ -206,8 +206,8 @@ const Posadas = () => {
 								{/* Amenities Grid */}
 								<div className="grid grid-cols-2 gap-x-6 md:gap-x-8 gap-y-4 mb-8">
 									<AmenityItemDark 
-										icon={<Waves className="w-5 h-5" />} 
-										text="Piscina Infinity" 
+										icon={<PartyPopper className="w-5 h-5" />} 
+										text="2 Churuatas Sociales" 
 										isVisible={inmarcesibleVisible}
 										delay={500}
 									/>
@@ -218,20 +218,20 @@ const Posadas = () => {
 										delay={550}
 									/>
 									<AmenityItemDark 
-										icon={<Home className="w-5 h-5" />} 
+										icon={<Waves className="w-5 h-5" />} 
 										text="Jacuzzi Privado" 
 										isVisible={inmarcesibleVisible}
 										delay={600}
 									/>
 									<AmenityItemDark 
 										icon={<ParkingCircle className="w-5 h-5" />} 
-										text="Estacionamiento" 
+										text="Estacionamiento Seguro" 
 										isVisible={inmarcesibleVisible}
 										delay={650}
 									/>
 									<AmenityItemDark 
 										icon={<Users className="w-5 h-5" />} 
-										text="Hasta 15 Huéspedes" 
+										text="Hasta 31 Huéspedes" 
 										isVisible={inmarcesibleVisible}
 										delay={700}
 									/>

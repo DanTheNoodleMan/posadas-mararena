@@ -116,7 +116,7 @@ function ReservasContent() {
 			setTiempoRestante((prev) => {
 				if (prev <= 1) {
 					clearInterval(interval);
-					setError("Tu reserva temporal expiró. Por favor intenta nuevamente.");
+					setError("Su reserva temporal expiró. Por favor intenta nuevamente.");
 					setPaso(1);
 					setHoldId(null);
 					return 0;
@@ -228,7 +228,7 @@ function ReservasContent() {
 
 	const validarFechas = (): boolean => {
 		if (!fechaInicio || !fechaFin) {
-			setError("Por favor selecciona las fechas de tu estadía");
+			setError("Por favor, seleccione las fechas de su estadía");
 			return false;
 		}
 
@@ -252,7 +252,7 @@ function ReservasContent() {
 
 	const validarSeleccionHabitaciones = (): boolean => {
 		if (tipoReserva === "habitacion" && habitacionesSeleccionadas.length === 0) {
-			setError("Por favor selecciona al menos una habitación");
+			setError("Por favor, seleccione al menos una habitación");
 			return false;
 		}
 		return true;
@@ -406,7 +406,7 @@ function ReservasContent() {
 
 		if (paso === 1) {
 			if (!posadaSeleccionada) {
-				setError("Por favor selecciona una posada");
+				setError("Por favor, seleccione una posada");
 				return;
 			}
 			setPaso(2);
@@ -626,7 +626,7 @@ function ReservasContent() {
 											<div>
 												<span className="font-semibold">Habitaciones Individuales</span>
 												<p className="text-xs text-primary-600/60 mt-1">
-													Elige las fechas y te mostraremos qué habitaciones están disponibles
+													Elija las fechas y le mostraremos qué habitaciones están disponibles
 												</p>
 											</div>
 										</div>
@@ -855,7 +855,7 @@ function ReservasContent() {
 											<strong>Realiza el pago</strong> según las instrucciones que verás al consultar su reserva
 										</li>
 										<li>
-											<strong>Contáctanos por WhatsApp</strong> una vez realizado el pago (si lo hace por transferencia bancaria) para confirmarlo
+											<strong>Contáctenos por WhatsApp</strong> una vez realizado el pago (si lo hace por transferencia bancaria) para confirmarlo
 										</li>
 									</ol>
 								</div>

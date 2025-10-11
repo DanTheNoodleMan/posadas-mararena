@@ -19,9 +19,9 @@ export default function PosadasPage() {
 
 				<div className="relative z-10 text-center px-6 py-24">
 					<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">NUESTRAS POSADAS</p>
-					<h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-50 mb-6">Elige Tu Experiencia</h1>
+					<h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-50 mb-6">Elija Su Experiencia</h1>
 					<p className="text-neutral-50 text-xl max-w-3xl mx-auto">
-						Dos espacios únicos diseñados para diferentes ocasiones. Ambas con el mismo compromiso: hacer de tu estadía un
+						Dos espacios únicos diseñados para diferentes ocasiones. Ambas con el mismo compromiso: hacer de su estadía un
 						momento inolvidable.
 					</p>
 				</div>
@@ -232,7 +232,7 @@ export default function PosadasPage() {
 				<div className="max-w-4xl mx-auto px-6 text-center">
 					<h3 className="font-display text-3xl md:text-4xl text-primary-600 mb-6">¿No está seguro cuál elegir?</h3>
 					<p className="text-primary-600/80 text-lg mb-8">
-						Contáctanos y le ayudaremos a encontrar la posada perfecta para su ocasión
+						Contáctenos y le ayudaremos a encontrar la posada perfecta para su ocasión
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button variant="primary" href="/reservas">

@@ -54,7 +54,7 @@ export default function HabitacionSelector({
 				<X className="w-12 h-12 text-red-400 mx-auto mb-4" />
 				<h3 className="font-display text-2xl text-primary-600 mb-2">No hay habitaciones disponibles</h3>
 				<p className="text-primary-600/70 mb-6">
-					Lo sentimos, todas las habitaciones están ocupadas en estas fechas. Por favor elige otras fechas o contáctanos por
+					Lo sentimos, todas las habitaciones están ocupadas en estas fechas. Por favor elija otras fechas o contáctenos por
 					WhatsApp.
 				</p>
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -175,7 +175,7 @@ export default function HabitacionSelector({
 			{habitacionesSeleccionadas.length > 0 && (
 				<div className="bg-accent-500/10 border border-accent-500 rounded-sm p-6">
 					<div className="flex items-center justify-between mb-4">
-						<h4 className="font-display text-xl text-primary-600">Resumen de tu selección</h4>
+						<h4 className="font-display text-xl text-primary-600">Resumen de su selección</h4>
 						<button
 							type="button"
 							onClick={() => onSeleccionChange([])}
