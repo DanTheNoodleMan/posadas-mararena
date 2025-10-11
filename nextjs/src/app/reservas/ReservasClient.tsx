@@ -345,7 +345,7 @@ function ReservasContent() {
 					nombre_cliente: nombreCliente,
 					email_cliente: emailCliente,
 					telefono_cliente: telefonoCliente,
-					notas_especiales: notasCliente,
+					notas_cliente: notasCliente,
 				});
 
 				if (!result.success || !result.reserva) {
@@ -480,8 +480,8 @@ function ReservasContent() {
 				<div className="max-w-4xl mx-auto px-6 lg:py-12">
 					{/* Header */}
 					<div className="text-center mb-12">
-						<h1 className="font-display text-4xl md:text-5xl text-primary-600 mb-4">Reserva tu Estadía</h1>
-						<p className="text-primary-600/70 text-lg">Completa los siguientes pasos para confirmar tu reserva</p>
+						<h1 className="font-display text-4xl md:text-5xl text-primary-600 mb-4">Reserva su Estadía</h1>
+						<p className="text-primary-600/70 text-lg">Completa los siguientes pasos para confirmar su reserva</p>
 					</div>
 
 					{/* Progress Bar */}
@@ -797,11 +797,11 @@ function ReservasContent() {
 									</div>
 									<div className="bg-primary-600/5 p-4 rounded-sm">
 										<p className="text-sm text-primary-600">
-											<strong>Instrucciones de Pago:</strong> Una vez confirmada tu reserva, podrás consultar los
-											detalles de pago usando tu código de reserva.
+											<strong>Instrucciones de Pago:</strong> Una vez confirmada su reserva, podrá consultar los
+											detalles de pago usando su código de reserva.
 										</p>
 										<p className="text-sm text-primary-600">
-											<strong>Importante:</strong> Guarda tu código de reserva. Lo necesitarás para consultar tu
+											<strong>Importante:</strong> Guarda su código de reserva. Lo necesitará para consultar su
 											reserva, ver métodos de pago, y gestionar cualquier cambio.
 										</p>
 									</div>
@@ -820,7 +820,7 @@ function ReservasContent() {
 
 							{/* Código de Reserva - MUY DESTACADO */}
 							<div className="mb-8">
-								<p className="text-primary-600/70 text-lg mb-4">Tu código de reserva es:</p>
+								<p className="text-primary-600/70 text-lg mb-4">Su código de reserva es:</p>
 								<div className="bg-primary-600 text-neutral-50 py-6 px-8 rounded-sm inline-block mb-4">
 									<span className="font-mono text-3xl font-bold tracking-wider">{codigoReserva}</span>
 								</div>
@@ -830,7 +830,7 @@ function ReservasContent() {
 										¡IMPORTANTE! Guarda este código
 									</p>
 									<p className="text-amber-800 text-xs mt-2">
-										Lo necesitarás para consultar tu reserva, ver métodos de pago y gestionar cambios
+										Lo necesitará para consultar su reserva, ver métodos de pago y gestionar cambios
 									</p>
 								</div>
 							</div>
@@ -844,7 +844,7 @@ function ReservasContent() {
 									</h3>
 									<ol className="list-decimal list-inside space-y-2 text-sm text-primary-600/80">
 										<li>
-											<strong>Consulta tu reserva</strong> usando el código {codigoReserva} para ver:
+											<strong>Consulta su reserva</strong> usando el código {codigoReserva} para ver:
 											<ul className="list-disc list-inside ml-6 mt-1 space-y-1 text-xs">
 												<li>Detalles completos de fechas y habitaciones</li>
 												<li>Instrucciones y métodos de pago</li>
@@ -852,18 +852,18 @@ function ReservasContent() {
 											</ul>
 										</li>
 										<li>
-											<strong>Realiza el pago</strong> según las instrucciones que verás al consultar tu reserva
+											<strong>Realiza el pago</strong> según las instrucciones que verás al consultar su reserva
 										</li>
 										<li>
-											<strong>Contáctanos por WhatsApp</strong> una vez realizado el pago para confirmarlo
+											<strong>Contáctanos por WhatsApp</strong> una vez realizado el pago (si lo hace por transferencia bancaria) para confirmarlo
 										</li>
 									</ol>
 								</div>
 
 								<div className="bg-accent-500/10 border border-accent-500 p-4 rounded-sm">
 									<p className="text-primary-600 text-sm">
-										<strong>Políticas de Cancelación:</strong> Puedes cancelar tu reserva hasta 72 horas antes del
-										check-in desde la página de consulta de reserva usando tu código.
+										<strong>Políticas de Cancelación:</strong> Puede cancelar su reserva usted mismo hasta 72 horas antes del
+										check-in desde la página de consulta de reserva usando su código.
 									</p>
 								</div>
 							</div>

@@ -59,7 +59,7 @@ export interface CreateReservaMultipleData {
 	nombre_cliente: string;
 	email_cliente: string;
 	telefono_cliente: string;
-	notas_especiales?: string;
+	notas_cliente?: string;
 }
 
 /**
@@ -392,6 +392,7 @@ export async function crearHoldMultiple(
 				habitacion_id: null, // NULL para holds múltiples
 				fecha_inicio: data.fecha_inicio,
 				fecha_fin: data.fecha_fin,
+				tipo_reserva: 'habitacion', 
 				expira_en: expiraEn.toISOString(),
 			})
 			.select()
@@ -496,7 +497,7 @@ export async function crearReservaMultiple(
 				nombre_cliente: data.nombre_cliente,
 				email_cliente: data.email_cliente,
 				telefono_cliente: data.telefono_cliente,
-				notas_especiales: data.notas_especiales,
+				notas_cliente: data.notas_cliente,
 				precio_por_noche: precioTotal, // Precio por noche de todas las habitaciones
 				precio_total: precioTotal * numNoches,
 				tipo_reserva: "habitacion",
