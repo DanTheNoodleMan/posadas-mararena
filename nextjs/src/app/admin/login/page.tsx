@@ -105,15 +105,6 @@ export default function AdminLoginPage() {
 							{loading ? "Iniciando sesión..." : "Iniciar Sesión"}
 						</button>
 					</form>
-
-					{/* Info */}
-					<div className="mt-6 pt-6 border-t border-neutral-200">
-						<p className="text-xs text-neutral-500 text-center">
-							Credenciales por defecto:
-							<br />
-							<code className="bg-neutral-100 px-2 py-1 rounded text-neutral-700">mararenaposadas@gmail.com</code>
-						</p>
-					</div>
 				</div>
 
 				{/* Back to site */}
