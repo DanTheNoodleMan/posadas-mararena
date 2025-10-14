@@ -59,7 +59,7 @@ const FooterCTA = () => {
 									<Image src="/LogoText.svg" alt="Mararena Posadas Logo" width={300} height={300} className="" />
 								</div>
 								<p className="text-sm text-neutral-50/80 font-serif italic leading-relaxed text-center">
-									Lujo, posadas de playa que vuelven al descanso
+									Lujosas posadas de playa que seducen al descanso
 								</p>
 								<p className="text-xs text-neutral-50/60 mt-2 text-center">Chirimena - Higuerote</p>
 							</div>
@@ -107,6 +107,14 @@ const FooterCTA = () => {
 									<Calendar className="w-4 h-4" />
 									Consultar reserva
 								</Link>
+							</div>
+
+							{/* Forma de pago */}
+							<div>
+								<h4 className="font-semibold text-accent-500 mb-4 tracking-wider text-sm">FORMA DE PAGO</h4>
+								<p className="text-sm text-neutral-50/80 mb-4">
+									En divisas en efectivo en nuestras oficinas administrativas en El Rosal, Caracas
+								</p>
 							</div>
 						</div>
 

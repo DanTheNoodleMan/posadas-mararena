@@ -26,7 +26,7 @@ const habitacionesPorArea = {
 			id: "standard-piscina-litera-1",
 			nombre: "Standard Piscina (Litera)",
 			descripcion: "Habitación estándar con litera, ubicada cerca de la piscina con acceso directo a cocina compartida",
-			capacidad: 3,
+			capacidad: 2,
 			precio: 140,
 			amenidades: ["Litera", "Cerca de piscina", "Acceso a cocina", "Aire acondicionado", "Baño privado"],
 			imagenes: [
@@ -58,7 +58,7 @@ const habitacionesPorArea = {
 			id: "junior-suite-churuata",
 			nombre: "Junior Suite Churuata",
 			descripcion: "Suites amplias en planta alta con cama queen y litera, ambiente acogedor con techos de palma",
-			capacidad: 3,
+			capacidad: 4,
 			precio: 450,
 			amenidades: ["Cama queen + litera", "Planta alta", "Vista panorámica", "Aire acondicionado", "Baño privado"],
 			imagenes: [
@@ -87,7 +87,7 @@ const habitacionesPorArea = {
 			id: "premium-cocina-privada",
 			nombre: "Premium con Cocina Privada",
 			descripcion: "Habitación premium con cocina privada, cama matrimonial y litera, perfecta para familias",
-			capacidad: 3,
+			capacidad: 4,
 			precio: 400,
 			amenidades: ["Cama matrimonial", "Litera", "Cocina privada", "Aire acondicionado", "Baño privado"],
 			imagenes: [

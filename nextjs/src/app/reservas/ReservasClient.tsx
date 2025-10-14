@@ -548,8 +548,11 @@ function ReservasContent() {
 														Hasta {posada.capacidad_maxima} personas
 													</span>
 													<span className="text-primary-600/60">
-														{habitacionesCount[posada.slug] || 0} habitaciones
+														{habitacionesCount[posada.slug] || 0} habitaciones desde{" "}
+														{posada.slug === "vista-al-mar" ? "$210" : "$140"}/noche
 													</span>
+													<span className="text-primary-600/60"></span>
+
 													<span className="font-semibold text-accent-500">
 														${posada.precio_posada_completa}/noche completa
 													</span>
@@ -797,12 +800,12 @@ function ReservasContent() {
 									</div>
 									<div className="bg-primary-600/5 p-4 rounded-sm">
 										<p className="text-sm text-primary-600">
-											<strong>Instrucciones de Pago:</strong> Una vez confirmada su reserva, podrá consultar los
-											detalles de pago usando su código de reserva.
+											<strong>FORMA DE PAGO:</strong> En divisas en efectivo en nuestras oficinas administrativas en
+											El Rosal, Caracas.
 										</p>
 										<p className="text-sm text-primary-600">
 											<strong>Importante:</strong> Guarda su código de reserva. Lo necesitará para consultar su
-											reserva, ver métodos de pago, y gestionar cualquier cambio.
+											reserva y gestionar cualquier cambio.
 										</p>
 									</div>
 								</div>
@@ -830,7 +833,7 @@ function ReservasContent() {
 										¡IMPORTANTE! Guarda este código
 									</p>
 									<p className="text-amber-800 text-xs mt-2">
-										Lo necesitará para consultar su reserva, ver métodos de pago y gestionar cambios
+										Lo necesitará para consultar su reserva y gestionar cambios
 									</p>
 								</div>
 							</div>
@@ -847,23 +850,21 @@ function ReservasContent() {
 											<strong>Consulta su reserva</strong> usando el código {codigoReserva} para ver:
 											<ul className="list-disc list-inside ml-6 mt-1 space-y-1 text-xs">
 												<li>Detalles completos de fechas y habitaciones</li>
-												<li>Instrucciones y métodos de pago</li>
+												<li>Instrucciones de pago</li>
 												<li>Datos de contacto de la posada</li>
 											</ul>
 										</li>
 										<li>
-											<strong>Realiza el pago</strong> según las instrucciones que verás al consultar su reserva
-										</li>
-										<li>
-											<strong>Contáctenos por WhatsApp</strong> una vez realizado el pago (si lo hace por transferencia bancaria) para confirmarlo
+											<strong>Realiza el pago: </strong> en divisas en efectivo en nuestras oficinas administrativas en
+											El Rosal, Caracas.
 										</li>
 									</ol>
 								</div>
 
 								<div className="bg-accent-500/10 border border-accent-500 p-4 rounded-sm">
 									<p className="text-primary-600 text-sm">
-										<strong>Políticas de Cancelación:</strong> Puede cancelar su reserva usted mismo hasta 72 horas antes del
-										check-in desde la página de consulta de reserva usando su código.
+										<strong>Políticas de Cancelación:</strong> Puede cancelar su reserva usted mismo hasta 72 horas
+										antes del check-in desde la página de consulta de reserva usando su código.
 									</p>
 								</div>
 							</div>
@@ -871,7 +872,7 @@ function ReservasContent() {
 							{/* CTAs */}
 							<div className="flex flex-col sm:flex-row gap-4 justify-center">
 								<Button variant="primary" href="/consultar-reserva" className="text-base px-8 py-4">
-									Ver Detalles y Métodos de Pago
+									Ver Reserva
 								</Button>
 								<Button
 									variant="secondary"
