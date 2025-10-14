@@ -1,4 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
+import { enviarNotificacionReserva } from "./email";
 
 export interface CreateReservaData {
 	tipo_reserva: "habitacion" | "posada_completa";
@@ -361,16 +362,13 @@ export async function crearHoldMultiple(
 		}
 
 		// Verificar disponibilidad de todas las habitaciones
-		const { data: disponible, error: errorVerificacion } = await supabase.rpc(
-			"verificar_disponibilidad_habitaciones",
-			{
-				p_posada_id: data.posada_id,
-				p_fecha_inicio: data.fecha_inicio,
-				p_fecha_fin: data.fecha_fin,
-				p_habitaciones_ids: data.habitaciones_ids,
-				p_session_id: data.session_id,
-			}
-		);
+		const { data: disponible, error: errorVerificacion } = await supabase.rpc("verificar_disponibilidad_habitaciones", {
+			p_posada_id: data.posada_id,
+			p_fecha_inicio: data.fecha_inicio,
+			p_fecha_fin: data.fecha_fin,
+			p_habitaciones_ids: data.habitaciones_ids,
+			p_session_id: data.session_id,
+		});
 
 		if (errorVerificacion) throw errorVerificacion;
 
@@ -392,7 +390,7 @@ export async function crearHoldMultiple(
 				habitacion_id: null, // NULL para holds múltiples
 				fecha_inicio: data.fecha_inicio,
 				fecha_fin: data.fecha_fin,
-				tipo_reserva: 'habitacion', 
+				tipo_reserva: "habitacion",
 				expira_en: expiraEn.toISOString(),
 			})
 			.select()
@@ -406,9 +404,7 @@ export async function crearHoldMultiple(
 			habitacion_id: habitacionId,
 		}));
 
-		const { error: errorHabitaciones } = await supabase
-			.from("holds_habitaciones")
-			.insert(habitacionesData);
+		const { error: errorHabitaciones } = await supabase.from("holds_habitaciones").insert(habitacionesData);
 
 		if (errorHabitaciones) {
 			// Si falla, eliminar el hold creado
@@ -446,16 +442,13 @@ export async function crearReservaMultiple(
 		}
 
 		// Verificar disponibilidad una última vez
-		const { data: disponible, error: errorVerificacion } = await supabase.rpc(
-			"verificar_disponibilidad_habitaciones",
-			{
-				p_posada_id: data.posada_id,
-				p_fecha_inicio: data.fecha_inicio,
-				p_fecha_fin: data.fecha_fin,
-				p_habitaciones_ids: data.habitaciones_ids,
-				p_session_id: data.session_id,
-			}
-		);
+		const { data: disponible, error: errorVerificacion } = await supabase.rpc("verificar_disponibilidad_habitaciones", {
+			p_posada_id: data.posada_id,
+			p_fecha_inicio: data.fecha_inicio,
+			p_fecha_fin: data.fecha_fin,
+			p_habitaciones_ids: data.habitaciones_ids,
+			p_session_id: data.session_id,
+		});
 
 		if (errorVerificacion) throw errorVerificacion;
 
@@ -469,21 +462,23 @@ export async function crearReservaMultiple(
 		// Obtener información de las habitaciones para calcular precio total
 		const { data: habitaciones, error: errorHabitaciones } = await supabase
 			.from("habitaciones")
-			.select("id, precio_por_noche")
+			.select("id, nombre, precio_por_noche")
 			.in("id", data.habitaciones_ids);
 
 		if (errorHabitaciones) throw errorHabitaciones;
 
 		// Calcular precio total
-		const precioTotal = habitaciones.reduce(
-			(total, h) => total + parseFloat(h.precio_por_noche.toString()),
-			0
-		);
+		const precioTotal = habitaciones.reduce((total, h) => total + parseFloat(h.precio_por_noche.toString()), 0);
 
 		// Calcular número de noches
 		const inicio = new Date(data.fecha_inicio);
 		const fin = new Date(data.fecha_fin);
 		const numNoches = Math.ceil((fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24));
+
+		// Obtener información de la posada
+		const { data: posada, error: errorPosada } = await supabase.from("posadas").select("nombre").eq("id", data.posada_id).single();
+
+		if (errorPosada) throw errorPosada;
 
 		// Crear la reserva principal
 		const { data: reserva, error: errorReserva } = await supabase
@@ -515,9 +510,7 @@ export async function crearReservaMultiple(
 			precio_por_noche: h.precio_por_noche,
 		}));
 
-		const { error: errorRelaciones } = await supabase
-			.from("reservas_habitaciones")
-			.insert(reservaHabitacionesData);
+		const { error: errorRelaciones } = await supabase.from("reservas_habitaciones").insert(reservaHabitacionesData);
 
 		if (errorRelaciones) {
 			// Si falla, eliminar la reserva creada
@@ -526,11 +519,38 @@ export async function crearReservaMultiple(
 		}
 
 		// Eliminar hold temporal si existe
-		await supabase
-			.from("holds_temporales")
-			.delete()
-			.eq("session_id", data.session_id)
-			.eq("posada_id", data.posada_id);
+		await supabase.from("holds_temporales").delete().eq("session_id", data.session_id).eq("posada_id", data.posada_id);
+
+		// ✅ NUEVO: Enviar notificación por email
+		try {
+			const resultadoEmail = await enviarNotificacionReserva({
+				idReserva: reserva.id, 
+				codigoReserva: reserva.codigo_reserva,
+				nombreCliente: data.nombre_cliente,
+				emailCliente: data.email_cliente,
+				telefonoCliente: data.telefono_cliente,
+				fechaInicio: data.fecha_inicio,
+				fechaFin: data.fecha_fin,
+				numHuespedes: data.num_huespedes,
+				precioTotal: reserva.precio_total,
+				nombrePosada: posada.nombre,
+				habitaciones: habitaciones.map((h) => ({
+					nombre: h.nombre,
+					precioPorNoche: parseFloat(h.precio_por_noche.toString()),
+				})),
+				notasCliente: data.notas_cliente,
+			});
+
+			if (!resultadoEmail.success) {
+				console.error("Error enviando email de notificación:", resultadoEmail.error);
+				// ⚠️ NO fallar la reserva si el email falla, solo loguear el error
+			} else {
+				console.log("✅ Email de notificación enviado exitosamente");
+			}
+		} catch (emailError) {
+			console.error("Error en notificación por email:", emailError);
+			// ⚠️ NO fallar la reserva si el email falla
+		}
 
 		return {
 			success: true,

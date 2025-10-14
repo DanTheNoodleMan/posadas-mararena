@@ -321,66 +321,80 @@ function ReservasContent() {
 	};
 
 	const finalizarReserva = async () => {
-		setLoading(true);
+		if (!posadaSeleccionada || !fechaInicio || !fechaFin) return;
+
 		setError(null);
+		setLoading(true);
 
 		try {
-			const { data: posadaData } = await supabase
-				.from("posadas")
-				.select("id, precio_posada_completa")
-				.eq("slug", posadaSeleccionada)
-				.single();
-
+			const posadaData = posadas.find((p) => p.slug === posadaSeleccionada);
 			if (!posadaData) throw new Error("Posada no encontrada");
 
-			// NUEVA LÓGICA: Usar función para múltiples habitaciones
+			// Validaciones
+			if (!nombreCliente.trim() || !emailCliente.trim() || !telefonoCliente.trim()) {
+				throw new Error("Por favor completa todos los campos requeridos");
+			}
+
+			if (!validarEmail(emailCliente)) {
+				throw new Error("Por favor ingresa un email válido");
+			}
+
 			if (tipoReserva === "habitacion") {
-				const result = await crearReservaMultiple(supabase, {
-					session_id: sessionId,
-					posada_id: posadaData.id,
-					fecha_inicio: fechaInicio,
-					fecha_fin: fechaFin,
-					habitaciones_ids: habitacionesSeleccionadas,
-					num_huespedes: numHuespedes,
-					nombre_cliente: nombreCliente,
-					email_cliente: emailCliente,
-					telefono_cliente: telefonoCliente,
-					notas_cliente: notasCliente,
-				});
-
-				if (!result.success || !result.reserva) {
-					setError(result.error || "Error creando reserva");
-					return;
-				}
-
-				setCodigoReserva(result.reserva.codigo_reserva);
-			} else {
-				// Posada completa - lógica antigua
-				const { numNoches, precioTotal } = calcularPrecioTotal(posadaData.precio_posada_completa, fechaInicio, fechaFin);
-
-				const { data: reserva, error } = await supabase
-					.from("reservas")
-					.insert({
-						tipo_reserva: "posada_completa",
+				// ✅ NUEVO: Llamar al API Route para habitaciones
+				const response = await fetch("/api/reservas", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
 						posada_id: posadaData.id,
-						habitacion_id: null,
+						habitaciones_ids: habitacionesSeleccionadas,
 						fecha_inicio: fechaInicio,
 						fecha_fin: fechaFin,
+						num_huespedes: numHuespedes,
 						nombre_cliente: nombreCliente,
 						email_cliente: emailCliente,
 						telefono_cliente: telefonoCliente,
-						num_huespedes: numHuespedes,
-						notas_cliente: notasCliente,
-						precio_por_noche: posadaData.precio_posada_completa,
-						precio_total: precioTotal,
+						notas_cliente: notasCliente || null,
 						session_id: sessionId,
-						estado: "pendiente",
-					})
-					.select()
-					.single();
+					}),
+				});
 
-				if (error) throw error;
-				setCodigoReserva(reserva.codigo_reserva);
+				const resultado = await response.json();
+
+				if (!resultado.success) {
+					throw new Error(resultado.error || "Error creando reserva");
+				}
+
+				setCodigoReserva(resultado.reserva.codigo_reserva);
+			} else {
+				// Posada completa - lógica antigua (también la movemos al API Route)
+				const response = await fetch("/api/reservas/posada-completa", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						posada_id: posadaData.id,
+						fecha_inicio: fechaInicio,
+						fecha_fin: fechaFin,
+						num_huespedes: numHuespedes,
+						nombre_cliente: nombreCliente,
+						email_cliente: emailCliente,
+						telefono_cliente: telefonoCliente,
+						notas_cliente: notasCliente || null,
+						session_id: sessionId,
+						precio_posada_completa: posadaData.precio_posada_completa,
+					}),
+				});
+
+				const resultado = await response.json();
+
+				if (!resultado.success) {
+					throw new Error(resultado.error || "Error creando reserva");
+				}
+
+				setCodigoReserva(resultado.reserva.codigo_reserva);
 			}
 
 			// Eliminar hold temporal
@@ -390,8 +404,8 @@ function ReservasContent() {
 
 			setPaso(5);
 		} catch (err: any) {
-			console.error("Error creando reserva:", err);
-			setError("Error completando la reserva. Por favor intenta de nuevo.");
+			console.error("Error finalizando reserva:", err);
+			setError(err.message || "Error al procesar la reserva. Por favor intenta de nuevo.");
 		} finally {
 			setLoading(false);
 		}
@@ -494,8 +508,8 @@ function ReservasContent() {
 											paso > idx + 1
 												? "bg-accent-500 text-primary-600"
 												: paso === idx + 1
-												? "bg-primary-600 text-neutral-50"
-												: "bg-neutral-200 text-primary-600/50"
+													? "bg-primary-600 text-neutral-50"
+													: "bg-neutral-200 text-primary-600/50"
 										}`}
 									>
 										{paso > idx + 1 ? <Check className="w-5 h-5" /> : idx + 1}
@@ -855,8 +869,8 @@ function ReservasContent() {
 											</ul>
 										</li>
 										<li>
-											<strong>Realiza el pago: </strong> en divisas en efectivo en nuestras oficinas administrativas en
-											El Rosal, Caracas.
+											<strong>Realiza el pago: </strong> en divisas en efectivo en nuestras oficinas administrativas
+											en El Rosal, Caracas.
 										</li>
 									</ol>
 								</div>
