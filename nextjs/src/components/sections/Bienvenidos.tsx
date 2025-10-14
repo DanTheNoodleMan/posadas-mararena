@@ -5,7 +5,7 @@ import Button from "@/components/ui/button";
 
 const features = [
 	{
-		title: "Piscinas infinity",
+		title: "Piscinas infinita",
 		description: "que abrazan el horizonte",
 	},
 	{

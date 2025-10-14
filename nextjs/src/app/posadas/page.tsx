@@ -60,7 +60,7 @@ export default function PosadasPage() {
 							</div>
 							<h2 className="font-display text-4xl md:text-5xl text-primary-600 mb-6">Vista al Mar</h2>
 							<p className="text-primary-600/80 text-lg leading-relaxed mb-8">
-								Una experiencia sublime donde el océano se convierte en protagonista. Amplias terrazas con piscina infinity,
+								Una experiencia sublime donde el océano se convierte en protagonista. Amplias terrazas con piscina infinita,
 								jacuzzi privado y acceso directo a playa privada. El refugio perfecto para familias y grupos pequeños que
 								buscan privacidad y exclusividad frente al mar.
 							</p>
@@ -74,7 +74,7 @@ export default function PosadasPage() {
 
 							{/* Key Features */}
 							<div className="grid grid-cols-2 gap-3 mb-8">
-								<FeatureItem icon={<Waves className="w-4 h-4" />} text="Piscina Infinity" />
+								<FeatureItem icon={<Waves className="w-4 h-4" />} text="Piscina Infinita" />
 								<FeatureItem icon={<Sparkles className="w-4 h-4" />} text="Jacuzzi Privado" />
 								<FeatureItem icon={<Home className="w-4 h-4" />} text="Playa Privada" />
 								<FeatureItem icon={<UtensilsCrossed className="w-4 h-4" />} text="Churuata + Parrilla" />
@@ -148,7 +148,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-2 gap-3 mb-8">
 								<FeatureItemDark icon={<Home className="w-4 h-4" />} text="2 Churuatas Sociales" />
 								<FeatureItemDark icon={<UtensilsCrossed className="w-4 h-4" />} text="Cocina Industrial" />
-								<FeatureItemDark icon={<Waves className="w-4 h-4" />} text="Piscinas Múltiples" />
+								<FeatureItemDark icon={<Waves className="w-4 h-4" />} text="Piscina Grande y Jacuzzi" />
 								<FeatureItemDark icon={<Users className="w-4 h-4" />} text="Eventos hasta 50" />
 							</div>
 

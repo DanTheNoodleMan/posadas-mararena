@@ -8,7 +8,7 @@ const Posadas = () => {
 	// Refs for intersection observer
 	const vistaAlMarRef = useRef<HTMLElement>(null);
 	const inmarcesibleRef = useRef<HTMLElement>(null);
-	
+
 	const [vistaAlMarVisible, setVistaAlMarVisible] = useState(false);
 	const [inmarcesibleVisible, setInmarcesibleVisible] = useState(false);
 
@@ -67,8 +67,8 @@ const Posadas = () => {
 									<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">FRENTE AL MAR</p>
 									<h2 className="font-display text-5xl md:text-6xl lg:text-7xl text-primary-600 mb-6">VISTA AL MAR</h2>
 									<p className="text-primary-600/80 text-lg leading-relaxed">
-										Una experiencia sublime donde el océano se convierte en protagonista. Amplias terrazas, piscina infinity
-										y acceso directo a playa privada.
+										Una experiencia sublime donde el océano se convierte en protagonista. Amplias terrazas, piscina
+										infinita y acceso directo a playa privada.
 									</p>
 								</div>
 
@@ -81,39 +81,39 @@ const Posadas = () => {
 								>
 									{/* Amenities Grid */}
 									<div className="grid grid-cols-2 gap-x-6 md:gap-x-8 gap-y-4 mb-8">
-										<AmenityItem 
-											icon={<Waves className="w-5 h-5" />} 
-											text="Piscina Infinity" 
+										<AmenityItem
+											icon={<Waves className="w-5 h-5" />}
+											text="Piscina Infinita"
 											isVisible={vistaAlMarVisible}
 											delay={300}
 										/>
-										<AmenityItem 
-											icon={<Wifi className="w-5 h-5" />} 
-											text="WiFi Premium" 
+										<AmenityItem
+											icon={<Wifi className="w-5 h-5" />}
+											text="WiFi Premium"
 											isVisible={vistaAlMarVisible}
 											delay={350}
 										/>
-										<AmenityItem 
-											icon={<Home className="w-5 h-5" />} 
-											text="Jacuzzi Privado" 
+										<AmenityItem
+											icon={<Home className="w-5 h-5" />}
+											text="Jacuzzi Privado"
 											isVisible={vistaAlMarVisible}
 											delay={400}
 										/>
-										<AmenityItem 
-											icon={<ParkingCircle className="w-5 h-5" />} 
-											text="Estacionamiento Seguro" 
+										<AmenityItem
+											icon={<ParkingCircle className="w-5 h-5" />}
+											text="Estacionamiento Seguro"
 											isVisible={vistaAlMarVisible}
 											delay={450}
 										/>
-										<AmenityItem 
-											icon={<Users className="w-5 h-5" />} 
-											text="Hasta 12 Huéspedes" 
+										<AmenityItem
+											icon={<Users className="w-5 h-5" />}
+											text="Hasta 12 Huéspedes"
 											isVisible={vistaAlMarVisible}
 											delay={500}
 										/>
-										<AmenityItem 
-											icon={<UtensilsCrossed className="w-5 h-5" />} 
-											text="Cocina Gourmet" 
+										<AmenityItem
+											icon={<UtensilsCrossed className="w-5 h-5" />}
+											text="Cocina Equipada"
 											isVisible={vistaAlMarVisible}
 											delay={550}
 										/>
@@ -171,7 +171,7 @@ const Posadas = () => {
 					/>
 
 					{/* Dark Overlay - responsive height to cover text content */}
-					<div className="absolute top-0 left-0 right-0 h-[85%] md:h-[55%] lg:h-[50%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
+					<div className="absolute top-0 left-0 right-0 h-[95%] md:h-[55%] lg:h-[50%] bg-gradient-to-b from-black/85 via-black/75 to-transparent" />
 
 					{/* Gradient Dissolve Bottom - blends into white background */}
 					<div className="absolute bottom-0 left-0 right-0 h-[150px] md:h-[200px] bg-gradient-to-t from-neutral-50 via-neutral-50/60 to-transparent" />
@@ -191,8 +191,8 @@ const Posadas = () => {
 								<p className="text-accent-500 tracking-[0.3em] text-sm font-light mb-4">IDEAL PARA EVENTOS</p>
 								<h2 className="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-50 mb-6">INMARCESIBLE</h2>
 								<p className="text-neutral-50/95 text-base md:text-lg leading-relaxed">
-									Una experiencia sublime donde el océano se convierte en protagonista. Amplias terrazas, piscina infinity
-									y acceso directo a playa privada.
+									Espacios amplios y versátiles diseñados para celebraciones memorables. Es el escenario perfecto para bodas, cumpleaños, retiros
+									empresariales y reuniones familiares grandes.
 								</p>
 							</div>
 
@@ -205,39 +205,39 @@ const Posadas = () => {
 							>
 								{/* Amenities Grid */}
 								<div className="grid grid-cols-2 gap-x-6 md:gap-x-8 gap-y-4 mb-8">
-									<AmenityItemDark 
-										icon={<PartyPopper className="w-5 h-5" />} 
-										text="2 Churuatas Sociales" 
+									<AmenityItemDark
+										icon={<PartyPopper className="w-5 h-5" />}
+										text="2 Churuatas Sociales"
 										isVisible={inmarcesibleVisible}
 										delay={500}
 									/>
-									<AmenityItemDark 
-										icon={<Wifi className="w-5 h-5" />} 
-										text="WiFi Premium" 
+									<AmenityItemDark
+										icon={<Wifi className="w-5 h-5" />}
+										text="WiFi Premium"
 										isVisible={inmarcesibleVisible}
 										delay={550}
 									/>
-									<AmenityItemDark 
-										icon={<Waves className="w-5 h-5" />} 
-										text="Jacuzzi Privado" 
+									<AmenityItemDark
+										icon={<Waves className="w-5 h-5" />}
+										text="Jacuzzi Privado"
 										isVisible={inmarcesibleVisible}
 										delay={600}
 									/>
-									<AmenityItemDark 
-										icon={<ParkingCircle className="w-5 h-5" />} 
-										text="Estacionamiento Seguro" 
+									<AmenityItemDark
+										icon={<ParkingCircle className="w-5 h-5" />}
+										text="Estacionamiento Seguro"
 										isVisible={inmarcesibleVisible}
 										delay={650}
 									/>
-									<AmenityItemDark 
-										icon={<Users className="w-5 h-5" />} 
-										text="Hasta 31 Huéspedes" 
+									<AmenityItemDark
+										icon={<Users className="w-5 h-5" />}
+										text="Hasta 31 Huéspedes"
 										isVisible={inmarcesibleVisible}
 										delay={700}
 									/>
-									<AmenityItemDark 
-										icon={<UtensilsCrossed className="w-5 h-5" />} 
-										text="Cocina Gourmet" 
+									<AmenityItemDark
+										icon={<UtensilsCrossed className="w-5 h-5" />}
+										text="Cocina Equipada"
 										isVisible={inmarcesibleVisible}
 										delay={750}
 									/>
@@ -260,17 +260,7 @@ const Posadas = () => {
 };
 
 // Amenity Item for Light Background (Vista al Mar)
-const AmenityItem = ({ 
-	icon, 
-	text, 
-	isVisible, 
-	delay 
-}: { 
-	icon: React.ReactNode; 
-	text: string; 
-	isVisible: boolean; 
-	delay: number; 
-}) => (
+const AmenityItem = ({ icon, text, isVisible, delay }: { icon: React.ReactNode; text: string; isVisible: boolean; delay: number }) => (
 	<div
 		className={`flex items-center gap-3 transition-all duration-700 ease-out ${
 			isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
@@ -283,17 +273,7 @@ const AmenityItem = ({
 );
 
 // Amenity Item for Dark Background (Inmarcesible)
-const AmenityItemDark = ({ 
-	icon, 
-	text, 
-	isVisible, 
-	delay 
-}: { 
-	icon: React.ReactNode; 
-	text: string; 
-	isVisible: boolean; 
-	delay: number; 
-}) => (
+const AmenityItemDark = ({ icon, text, isVisible, delay }: { icon: React.ReactNode; text: string; isVisible: boolean; delay: number }) => (
 	<div
 		className={`flex items-center gap-3 transition-all duration-700 ease-out ${
 			isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"

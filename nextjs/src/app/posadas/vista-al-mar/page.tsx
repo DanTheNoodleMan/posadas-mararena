@@ -80,7 +80,7 @@ const habitaciones = [
 const amenidadesPremium = [
 	{
 		icon: <Waves className="w-6 h-6" />,
-		titulo: "Piscina Infinity",
+		titulo: "Piscina Infinita",
 		descripcion: "Vista panorámica al mar con jacuzzi integrado",
 	},
 	{
@@ -122,7 +122,7 @@ const amenidadesPremium = [
 
 // Galería de espacios comunes
 const galeriaEspacios = [
-	{ src: "/images/posadas/vista-al-mar/espacios/piscina.webp", alt: "Piscina infinity con vista al mar", categoria: "Piscina" },
+	{ src: "/images/posadas/vista-al-mar/espacios/piscina.webp", alt: "Piscina infinita con vista al mar", categoria: "Piscina" },
 	{ src: "/images/posadas/vista-al-mar/espacios/jacuzzi.webp", alt: "Jacuzzi privado", categoria: "Piscina" },
 	{ src: "/images/posadas/vista-al-mar/exterior2.webp", alt: "Churuata con parrillera", categoria: "Churuata" },
 	{ src: "/images/posadas/vista-al-mar/espacios/cocina.webp", alt: "Cocina equipada", categoria: "Cocina" },
@@ -205,7 +205,7 @@ export default function VistaAlMarPage() {
 					<h2 className="font-display text-4xl md:text-5xl text-primary-600 mb-6">Una Experiencia Inolvidable</h2>
 					<p className="text-primary-600/80 text-lg leading-relaxed mb-8">
 						Vista al Mar es el refugio perfecto para quienes buscan privacidad y exclusividad frente al océano. Con piscina
-						infinity, jacuzzi privado y acceso directo a playa privada, cada momento se convierte en una experiencia sublime.
+						infinita, jacuzzi privado y acceso directo a playa privada, cada momento se convierte en una experiencia sublime.
 					</p>
 					<p className="text-primary-600/80 text-lg leading-relaxed">
 						Ideal para familias y grupos pequeños que desean disfrutar del lujo tropical con todas las comodidades modernas.
