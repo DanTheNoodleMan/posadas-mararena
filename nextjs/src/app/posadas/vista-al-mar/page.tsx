@@ -26,7 +26,7 @@ const habitaciones = [
 		nombre: "Suite Master",
 		descripcion: "Amplia suite principal con balcón privado, vestier espacioso y vista panorámica al mar",
 		capacidad: 2,
-		precio: 420,
+		precio: 700,
 		amenidades: ["Balcón privado", "Vista al mar", "Vestier", "Baño privado", "Ático amplio", "Aire acondicionado"],
 		imagenes: [
 			"/images/posadas/vista-al-mar/suite/suite1.webp",
@@ -44,7 +44,7 @@ const habitaciones = [
 		nombre: "Suite Junior",
 		descripcion: "Suites acogedoras con baño privado y ático, perfectas para parejas",
 		capacidad: 2,
-		precio: 210,
+		precio: 350,
 		amenidades: ["Baño privado", "Ático", "Aire acondicionado", "Closet"],
 		imagenes: [
 			"/images/posadas/vista-al-mar/junior/junior1.webp",
@@ -65,7 +65,7 @@ const habitaciones = [
 		nombre: "Habitación Doble con Anexo",
 		descripcion: "Habitación en planta baja con cama matrimonial y anexo con cama individual, ideal para familias pequeñas",
 		capacidad: 3,
-		precio: 250,
+		precio: 400,
 		amenidades: ["Planta baja", "Anexo individual", "Baño privado", "Aire acondicionado"],
 		imagenes: [
 			"/images/posadas/vista-al-mar/doble/doble1.webp",

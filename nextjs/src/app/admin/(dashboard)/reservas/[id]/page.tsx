@@ -1,5 +1,5 @@
 // Archivo: src/app/admin/(dashboard)/reservas/[id]/page.tsx
-// Página de detalle de una reserva individual - CORREGIDA
+// Página de detalle de una reserva individual
 
 import { createAdminClient } from "@/lib/auth-admin";
 import { notFound } from "next/navigation";

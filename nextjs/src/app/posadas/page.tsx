@@ -69,7 +69,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBox number="6" label="Habitaciones" />
 								<StatBox number="12" label="Huéspedes" />
-								<StatBox number="$210+" label="Por noche" small />
+								<StatBox number="$350+" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}
@@ -99,20 +99,20 @@ export default function PosadasPage() {
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 							<RoomCard
 								name="Suite Master"
-								price="$420"
+								price="$700"
 								capacity="2"
 								features={["Balcón privado", "Vista al mar", "Vestier"]}
 							/>
 							<RoomCard
 								name="Suite Junior"
-								price="$210"
+								price="$350"
 								capacity="2"
 								features={["Baño privado", "Ático", "Aire acondicionado"]}
 								count="4 disponibles"
 							/>
 							<RoomCard
 								name="Habitación Doble"
-								price="$250"
+								price="$400"
 								capacity="3"
 								features={["Planta baja", "Anexo individual", "Baño privado"]}
 							/>
@@ -191,7 +191,7 @@ export default function PosadasPage() {
 						</div>
 					</div>
 
-					{/* Habitaciones Preview - DISEÑO MEJORADO */}
+					{/* Habitaciones Preview */}
 					<div className="relative">
 						{/* Fondo con gradiente sutil */}
 						<div className="absolute inset-0 bg-gradient-to-br from-primary-700/50 via-primary-600/30 to-primary-500/50 rounded-sm" />
