@@ -69,7 +69,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBox number="6" label="Habitaciones" />
 								<StatBox number="12" label="Huéspedes" />
-								<StatBox number="$350+" label="Por noche" small />
+								<StatBox number="$1,250" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}
@@ -95,7 +95,7 @@ export default function PosadasPage() {
 
 					{/* Habitaciones Preview */}
 					<div className="bg-neutral-100 p-8 rounded-sm">
-						<h3 className="font-display text-2xl text-primary-600 mb-6">Habitaciones disponibles</h3>
+						<h3 className="font-display text-2xl text-primary-600 mb-6">Habitaciones incluidas</h3>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 							<RoomCard
 								name="Suite Master"
@@ -141,7 +141,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBoxDark number="11" label="Habitaciones" />
 								<StatBoxDark number="31" label="Huéspedes" />
-								<StatBoxDark number="$140+" label="Por noche" small />
+								<StatBoxDark number="$1,980" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}
@@ -295,10 +295,7 @@ const RoomCard = ({
 			<h4 className="font-semibold text-primary-600">{name}</h4>
 			{count && <span className="text-xs text-accent-500">{count}</span>}
 		</div>
-		<div className="flex items-baseline gap-2 mb-4">
-			<span className="text-2xl font-display text-accent-500">{price}</span>
-			<span className="text-xs text-primary-600/60">por noche</span>
-		</div>
+
 		<div className="flex items-center gap-2 text-sm text-primary-600/70 mb-4">
 			<Users className="w-4 h-4" />
 			<span>Hasta {capacity} personas</span>
@@ -332,10 +329,7 @@ const RoomCardDark = ({
 			<h4 className="font-semibold text-neutral-50">{name}</h4>
 			{count && <span className="text-xs text-accent-500">{count}</span>}
 		</div>
-		<div className="flex items-baseline gap-2 mb-4">
-			<span className="text-2xl font-display text-accent-500">{price}</span>
-			<span className="text-xs text-neutral-50/80">por noche</span>
-		</div>
+
 		<div className="flex items-center gap-2 text-sm text-neutral-50/90 mb-4">
 			<Users className="w-4 h-4" />
 			<span>Hasta {capacity} personas</span>

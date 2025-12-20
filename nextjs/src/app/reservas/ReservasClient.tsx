@@ -561,10 +561,7 @@ function ReservasContent() {
 														<UsersIcon className="w-4 h-4 text-accent-500" />
 														Hasta {posada.capacidad_maxima} personas
 													</span>
-													<span className="text-primary-600/60">
-														{habitacionesCount[posada.slug] || 0} habitaciones desde{" "}
-														{posada.slug === "vista-al-mar" ? "$210" : "$140"}/noche
-													</span>
+
 													<span className="text-primary-600/60"></span>
 
 													<span className="font-semibold text-accent-500">
@@ -634,19 +631,7 @@ function ReservasContent() {
 												<span className="text-accent-500">${posadaActual.precio_posada_completa}/noche</span>
 											</div>
 										</div>
-										<div
-											className={`p-4 border-2 rounded-sm cursor-pointer ${
-												tipoReserva === "habitacion" ? "border-accent-500 bg-accent-500/5" : "border-neutral-300"
-											}`}
-											onClick={() => setTipoReserva("habitacion")}
-										>
-											<div>
-												<span className="font-semibold">Habitaciones Individuales</span>
-												<p className="text-xs text-primary-600/60 mt-1">
-													Elija las fechas y le mostraremos qué habitaciones están disponibles
-												</p>
-											</div>
-										</div>
+										
 									</div>
 								</div>
 

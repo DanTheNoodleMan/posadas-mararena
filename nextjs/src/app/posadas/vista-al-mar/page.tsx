@@ -238,8 +238,8 @@ export default function VistaAlMarPage() {
 
 					{/* Precio posada completa */}
 					<div className="mt-16 bg-primary-600 p-8 md:p-12 rounded-sm text-center">
-						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">¿Le gustaría la posada completa?</h3>
-						<p className="text-neutral-50/80 text-lg mb-6">Disfruta de todas las 6 habitaciones y espacios exclusivos</p>
+						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">La posada, solo para usted</h3>
+						<p className="text-neutral-50/80 text-lg mb-6">Alquila la posada completa y disfruta de privacidad total</p>
 						<div className="flex items-baseline justify-center gap-3 mb-8">
 							<span className="font-display text-5xl md:text-6xl text-accent-500">$1,250</span>
 							<span className="text-neutral-50/80 text-lg">por noche</span>
@@ -399,10 +399,7 @@ const HabitacionCard = ({
 
 				<p className="text-primary-600/80 mb-6">{habitacion.descripcion}</p>
 
-				<div className="flex items-baseline gap-3 mb-6">
-					<span className="font-display text-4xl text-accent-500">${habitacion.precio}</span>
-					<span className="text-primary-600/60 text-sm">por noche</span>
-				</div>
+
 
 				<div className="flex items-center gap-2 text-primary-600/70 mb-6">
 					<Users className="w-5 h-5" />
@@ -423,9 +420,6 @@ const HabitacionCard = ({
 					</ul>
 				</div>
 
-				<Button variant="secondary" href={`/reservas?posada=vista-al-mar&habitacion=${habitacion.id}`}>
-					Reservar esta habitación
-				</Button>
 			</div>
 		</div>
 	);
