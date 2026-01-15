@@ -69,7 +69,7 @@ export default function PosadasPage() {
 							<div className="grid grid-cols-3 gap-6 mb-8">
 								<StatBox number="6" label="Habitaciones" />
 								<StatBox number="12" label="Huéspedes" />
-								<StatBox number="$1,250" label="Por noche" small />
+								<StatBox number="$1,600" label="Por noche" small />
 							</div>
 
 							{/* Key Features */}

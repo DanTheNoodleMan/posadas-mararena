@@ -190,7 +190,7 @@ export default function VistaAlMarPage() {
 					<div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-12">
 						<StatQuick number="6" label="Habitaciones" />
 						<StatQuick number="12+" label="Huéspedes" />
-						<StatQuick number="$1,250" label="Posada completa" />
+						<StatQuick number="$1,600" label="Posada completa" />
 					</div>
 
 					<Button variant="primary" href="/reservas?posada=vista-al-mar" size="lg">
@@ -241,7 +241,7 @@ export default function VistaAlMarPage() {
 						<h3 className="font-display text-3xl md:text-4xl text-neutral-50 mb-4">La posada, solo para usted</h3>
 						<p className="text-neutral-50/80 text-lg mb-6">Alquila la posada completa y disfruta de privacidad total</p>
 						<div className="flex items-baseline justify-center gap-3 mb-8">
-							<span className="font-display text-5xl md:text-6xl text-accent-500">$1,250</span>
+							<span className="font-display text-5xl md:text-6xl text-accent-500">$1,600</span>
 							<span className="text-neutral-50/80 text-lg">por noche</span>
 						</div>
 						<Button variant="primary" href="/reservas?posada=vista-al-mar&tipo=completa" size="lg">
